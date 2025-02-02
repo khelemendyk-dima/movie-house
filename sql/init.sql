@@ -1,13 +1,26 @@
+-- roles table
+CREATE TABLE roles
+(
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+INSERT INTO roles(ID, NAME) VALUES (1, 'ADMIN');
+INSERT INTO roles(ID, NAME) VALUES (2, 'USER');
+
 -- users table
 CREATE TABLE users
 (
-    id            SERIAL PRIMARY KEY,
-    name          VARCHAR(100) NOT NULL,
-    email         VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    role          VARCHAR(20)  NOT NULL CHECK (role IN ('ADMIN', 'USER')),
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id       SERIAL PRIMARY KEY,
+    role_id  INTEGER      NOT NULL,
+    name     VARCHAR(50) NOT NULL,
+    email    VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_users_role_id FOREIGN KEY(role_id) REFERENCES roles(id)
 );
+
+INSERT INTO users(id, role_id, name, email, password) VALUES (1, 1, 'admin', 'admin@gmail.com', '$2a$10$7/2PxqDj6TEJhPlWpDQFJeaQko5ZJ9SliaiyFA/5ALGhqJKMIIBxS');
+INSERT INTO users(id, role_id, name, email, password) VALUES (2, 2, 'user', 'user@gmail.com', '$2a$10$Pf4LDhp0gqnOrFbdnf4zRuFHEl9vg.vAqmqUcBH5gkV8Fo10Pjgde');
 
 -- movies table
 CREATE TABLE movies

@@ -1,29 +1,39 @@
 package com.moviehouse.controller;
 
-import com.moviehouse.model.User;
-import com.moviehouse.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.moviehouse.dto.UserDto;
+import com.moviehouse.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
-
-    private final UserRepository userRepository;
-
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public User addUser(@RequestBody User user) {
-        return userRepository.save(user);
+    @GetMapping("{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long userId) {
+        return new ResponseEntity<>(userService.getById(userId), HttpStatus.OK);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId,
+                                              @RequestBody @Valid UserDto userDto) {
+        userDto.setId(userId);
+        return new ResponseEntity<>(userService.update(userDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<UserDto> deleteUser(@PathVariable("id") Long userId) {
+        return new ResponseEntity<>(userService.delete(userId), HttpStatus.OK);
     }
 }
-
