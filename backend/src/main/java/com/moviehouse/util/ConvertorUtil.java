@@ -1,8 +1,10 @@
 package com.moviehouse.util;
 
+import com.moviehouse.dto.MovieDto;
 import com.moviehouse.dto.RegistrationDto;
 import com.moviehouse.dto.UserDto;
 import com.moviehouse.exceptions.RoleNotFoundException;
+import com.moviehouse.model.Movie;
 import com.moviehouse.model.Role;
 import com.moviehouse.model.User;
 import com.moviehouse.repository.RoleRepository;
@@ -39,4 +41,11 @@ public class ConvertorUtil {
         return user;
     }
 
+    public MovieDto toMovieDto(Movie movie) {
+        return modelMapper.map(movie, MovieDto.class);
+    }
+
+    public Movie toMovie(MovieDto movieDto) {
+        return modelMapper.map(movieDto, Movie.class);
+    }
 }

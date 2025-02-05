@@ -5,8 +5,8 @@ CREATE TABLE roles
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
-INSERT INTO roles(ID, NAME) VALUES (1, 'ADMIN');
-INSERT INTO roles(ID, NAME) VALUES (2, 'USER');
+INSERT INTO roles(NAME) VALUES ('ADMIN');
+INSERT INTO roles(NAME) VALUES ('USER');
 
 -- users table
 CREATE TABLE users
@@ -19,20 +19,19 @@ CREATE TABLE users
     CONSTRAINT fk_users_role_id FOREIGN KEY(role_id) REFERENCES roles(id)
 );
 
-INSERT INTO users(id, role_id, name, email, password) VALUES (1, 1, 'admin', 'admin@gmail.com', '$2a$10$7/2PxqDj6TEJhPlWpDQFJeaQko5ZJ9SliaiyFA/5ALGhqJKMIIBxS');
-INSERT INTO users(id, role_id, name, email, password) VALUES (2, 2, 'user', 'user@gmail.com', '$2a$10$Pf4LDhp0gqnOrFbdnf4zRuFHEl9vg.vAqmqUcBH5gkV8Fo10Pjgde');
+INSERT INTO users(role_id, name, email, password) VALUES (1, 'admin', 'admin@gmail.com', '$2a$10$7/2PxqDj6TEJhPlWpDQFJeaQko5ZJ9SliaiyFA/5ALGhqJKMIIBxS');
+INSERT INTO users(role_id, name, email, password) VALUES (2, 'user', 'user@gmail.com', '$2a$10$Pf4LDhp0gqnOrFbdnf4zRuFHEl9vg.vAqmqUcBH5gkV8Fo10Pjgde');
 
 -- movies table
 CREATE TABLE movies
 (
     id           SERIAL PRIMARY KEY,
-    title        VARCHAR(255) NOT NULL,
+    title        VARCHAR(100) NOT NULL,
     description  TEXT,
     duration     INTEGER      NOT NULL,
     age_rating   VARCHAR(10),
     release_date DATE         NOT NULL,
-    poster_url   TEXT,
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    poster_url   TEXT
 );
 
 -- halls table

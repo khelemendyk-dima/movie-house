@@ -1,10 +1,5 @@
-package com.moviehouse.model;
+package com.moviehouse.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,14 +9,11 @@ import lombok.Data;
 import java.time.LocalDate;
 
 import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.EMPTY_POSTER_URL;
 
 @Data
-@Entity
-@Table(name = "movies")
-public class Movie {
+public class MovieDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = EMPTY_TITLE)
@@ -46,3 +38,4 @@ public class Movie {
     @NotBlank(message = EMPTY_POSTER_URL)
     private String posterUrl;
 }
+
