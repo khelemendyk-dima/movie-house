@@ -1,7 +1,9 @@
 package com.moviehouse.exceptions;
 
+import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.PASSWORD_MISMATCH;
+
 public class PasswordMismatchException extends ServiceException {
-    public PasswordMismatchException(String message) {
-        super(message);
+    public PasswordMismatchException() {
+        super(PASSWORD_MISMATCH);
     }
 }

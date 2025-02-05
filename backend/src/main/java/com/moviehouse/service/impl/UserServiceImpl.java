@@ -17,10 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.ROLE_BY_NAME_NOT_FOUND;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.USER_BY_ID_NOT_FOUND;
-import static java.lang.String.format;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -32,21 +28,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto update(UserDto userDto) {
-        userValidator.checkIfEmailInUse(userDto.getId(), userDto.getEmail());
+    public UserDto update(Long id, UserDto userDto) {
+        userValidator.checkIfEmailInUse(id, userDto.getEmail());
 
-        User existingUser = setupUserToUpdate(userDto);
+        User userToUpdate = setupUserToUpdate(id, userDto);
+        userRepository.save(userToUpdate);
 
-        userRepository.save(existingUser);
-
-        return convertor.toUserDto(existingUser);
+        return convertor.toUserDto(userToUpdate);
     }
 
     @Transactional
     @Override
-    public UserDto delete(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(format(USER_BY_ID_NOT_FOUND, userId)));
+    public UserDto delete(Long id) {
+        User user = findUserById(id);
 
         userRepository.delete(user);
 
@@ -55,8 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(format(USER_BY_ID_NOT_FOUND, id)));
+        User user = findUserById(id);
 
         return convertor.toUserDto(user);
     }
@@ -68,17 +61,21 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private User setupUserToUpdate(UserDto userDto) {
+    private User setupUserToUpdate(Long id, UserDto userDto) {
         Role role = roleRepository.findByName(userDto.getRole())
-                .orElseThrow(() -> new RoleNotFoundException(format(ROLE_BY_NAME_NOT_FOUND, userDto.getRole())));
+                .orElseThrow(() -> new RoleNotFoundException(userDto.getRole()));
 
-        User existingUser = userRepository.findById(userDto.getId())
-                .orElseThrow(() -> new UserNotFoundException(format(USER_BY_ID_NOT_FOUND, userDto.getId())));
+        User existingUser = findUserById(id);
 
         existingUser.setRole(role);
         existingUser.setName(userDto.getName());
         existingUser.setEmail(userDto.getEmail());
 
         return existingUser;
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 }

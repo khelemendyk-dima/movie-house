@@ -17,9 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.USER_BY_EMAIL_NOT_FOUND;
-import static java.lang.String.format;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -51,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
                 ));
 
         User user = userRepository.findByEmail(loginDto.getEmail())
-                .orElseThrow(() -> new UserNotFoundException(format(USER_BY_EMAIL_NOT_FOUND, loginDto.getEmail())));
+                .orElseThrow(() -> new UserNotFoundException(loginDto.getEmail()));
 
         return AuthDto.builder()
                 .token(jwtUtil.generateToken(user))
