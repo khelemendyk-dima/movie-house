@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(ErrorDto.createErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                SERVER_ERROR
+                SERVER_ERROR + e.getMessage()
         ), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

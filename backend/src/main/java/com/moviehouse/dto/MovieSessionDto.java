@@ -1,7 +1,7 @@
-package com.moviehouse.model;
+package com.moviehouse.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -11,26 +11,17 @@ import java.time.LocalDateTime;
 import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
 
 @Data
-@Entity
-@Table(name = "sessions")
-public class MovieSession {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MovieSessionDto {
     private Long id;
 
     @NotNull(message = EMPTY_MOVIE_ID)
-    @ManyToOne
-    @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;
+    private Long movieId;
 
     @NotNull(message = EMPTY_HALL_ID)
-    @ManyToOne
-    @JoinColumn(name = "hall_id", nullable = false)
-    private Hall hall;
+    private Long hallId;
 
     @NotNull(message = EMPTY_START_TIME)
-    @Column(name = "start_time", nullable = false)
+    @FutureOrPresent(message = INVALID_START_TIME)
     private LocalDateTime startTime;
 
     @NotNull(message = EMPTY_PRICE)

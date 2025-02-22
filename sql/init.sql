@@ -19,8 +19,8 @@ CREATE TABLE users
     CONSTRAINT fk_users_role_id FOREIGN KEY(role_id) REFERENCES roles(id)
 );
 
-INSERT INTO users(role_id, name, email, password) VALUES (1, 'admin', 'admin@gmail.com', '$2a$10$7/2PxqDj6TEJhPlWpDQFJeaQko5ZJ9SliaiyFA/5ALGhqJKMIIBxS');
-INSERT INTO users(role_id, name, email, password) VALUES (2, 'user', 'user@gmail.com', '$2a$10$Pf4LDhp0gqnOrFbdnf4zRuFHEl9vg.vAqmqUcBH5gkV8Fo10Pjgde');
+INSERT INTO users(role_id, name, email, password) VALUES (1, 'admin', 'admin@gmail.com', '$2a$10$ooLnRdwpGFBuTyLPLPxz5ub9zQlQbsw0GSjGdfLdIbMqTlQqYCO0u');
+INSERT INTO users(role_id, name, email, password) VALUES (2, 'user', 'user@gmail.com', '$2a$10$bt.5EA5nJUlPR5A1CsBBP.ZeBGjTJqWOjulubwHZMk1fMZAsYF8eO');
 
 -- movies table
 CREATE TABLE movies
@@ -34,14 +34,19 @@ CREATE TABLE movies
     poster_url   TEXT
 );
 
+INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Captain America', 'Some interesting description about captain America', 144, '16+', '2025-02-02', '253525e3-c34f-4e8a-b866-5313808f5e3f_Captain_America_Brave_New_World.jpg');
+
 -- halls table
 CREATE TABLE halls
 (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(100) NOT NULL,
-    total_seats INTEGER      NOT NULL,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    total_seats INTEGER      NOT NULL
 );
+
+INSERT INTO halls(name, total_seats) VALUES ('Big Hall 1', 112);
+INSERT INTO halls(name, total_seats) VALUES ('Big Hall 2', 70);
+INSERT INTO halls(name, total_seats) VALUES ('VIP Hall 3', 12);
 
 -- seats table
 CREATE TABLE seats
@@ -52,6 +57,48 @@ CREATE TABLE seats
     seat_number INTEGER NOT NULL
 );
 
+-- Hall 1: 7 rows, 16 seats per row
+DO $$
+DECLARE
+row_num INT;
+    seat_num INT;
+BEGIN
+FOR row_num IN 1..7 LOOP
+        FOR seat_num IN 1..16 LOOP
+            INSERT INTO seats (hall_id, row_number, seat_number)
+            VALUES (1, row_num, seat_num);
+END LOOP;
+END LOOP;
+END $$;
+
+-- Hall 2: 5 rows, 14 seats per row
+DO $$
+DECLARE
+row_num INT;
+    seat_num INT;
+BEGIN
+FOR row_num IN 1..5 LOOP
+        FOR seat_num IN 1..14 LOOP
+            INSERT INTO seats (hall_id, row_number, seat_number)
+            VALUES (2, row_num, seat_num);
+END LOOP;
+END LOOP;
+END $$;
+
+-- Hall 3 (VIP): 4 rows, 3 seats per row
+DO $$
+DECLARE
+row_num INT;
+    seat_num INT;
+BEGIN
+FOR row_num IN 1..3 LOOP
+        FOR seat_num IN 1..4 LOOP
+            INSERT INTO seats (hall_id, row_number, seat_number)
+            VALUES (3, row_num, seat_num);
+END LOOP;
+END LOOP;
+END $$;
+
 -- sessions table
 CREATE TABLE sessions
 (
@@ -59,8 +106,7 @@ CREATE TABLE sessions
     movie_id   INTEGER        NOT NULL REFERENCES movies (id),
     hall_id    INTEGER        NOT NULL REFERENCES halls (id),
     start_time TIMESTAMP      NOT NULL,
-    price      DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    price      DECIMAL(10, 2) NOT NULL
 );
 
 -- orders table

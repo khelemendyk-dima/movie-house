@@ -11,6 +11,8 @@ public class ExceptionMessageConstant {
     public static final String ROLE_BY_NAME_NOT_FOUND = "Role with name='%s' not found";
     public static final String MOVIE_BY_ID_NOT_FOUND = "Movie with id='%s' not found";
     public static final String POSTER_NOT_FOUND = "Poster='%s' not found";
+    public static final String MOVIE_SESSION_BY_ID_NOT_FOUND = "Movie session with id='%s' not found";
+    public static final String HALL_BY_ID_NOT_FOUND = "Hall with id='%s' not found";
 
     public static final String EMPTY_PASSWORD = "Password is required";
     public static final String EMPTY_EMAIL = "Email is required";
@@ -22,6 +24,12 @@ public class ExceptionMessageConstant {
     public static final String EMPTY_AGE_RATING = "Age rating is required";
     public static final String EMPTY_RELEASE_DATE = "Release date is required";
     public static final String EMPTY_POSTER_URL = "Poster URL is required";
+    public static final String EMPTY_MOVIE_ID = "Movie ID is required";
+    public static final String EMPTY_HALL_ID = "Hall ID is required";
+    public static final String EMPTY_START_TIME = "Start time is required";
+    public static final String EMPTY_START_DATE = "Start date is required";
+    public static final String EMPTY_END_DATE = "Start date is required";
+    public static final String EMPTY_PRICE = "Price is required";
 
     public static final String INCORRECT_NAME_FORMAT = "Name must contain only letters and a single space between words";
     public static final String INCORRECT_PASSWORD_FORMAT = "Password must be 8-32 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)";
@@ -30,6 +38,10 @@ public class ExceptionMessageConstant {
     public static final String INVALID_LOGIN_DATA = "Invalid username or password";
     public static final String INVALID_TOKEN = "Invalid token";
     public static final String INVALID_DURATION = "Duration must be at least 1 minute";
+    public static final String INVALID_START_TIME = "Start time must be in the present or future";
+    public static final String INVALID_START_DATE = "Start date must be in the present or future";
+    public static final String INVALID_END_DATE = "End date must be in the future";
+    public static final String INVALID_PRICE = "Price must be greater than zero";
 
     public static final String NAME_SIZE_EXCEEDED = "Name must not exceed 50 characters";
     public static final String TITLE_SIZE_EXCEEDED = "Title must not exceed 100 characters";
