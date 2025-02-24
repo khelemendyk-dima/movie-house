@@ -13,10 +13,10 @@ CREATE TABLE users
 (
     id       SERIAL PRIMARY KEY,
     role_id  INTEGER      NOT NULL,
-    name     VARCHAR(50) NOT NULL,
+    name     VARCHAR(50)  NOT NULL,
     email    VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    CONSTRAINT fk_users_role_id FOREIGN KEY(role_id) REFERENCES roles(id)
+    CONSTRAINT fk_users_role_id FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
 INSERT INTO users(role_id, name, email, password) VALUES (1, 'admin', 'admin@gmail.com', '$2a$10$ooLnRdwpGFBuTyLPLPxz5ub9zQlQbsw0GSjGdfLdIbMqTlQqYCO0u');
@@ -34,7 +34,48 @@ CREATE TABLE movies
     poster_url   TEXT
 );
 
-INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Captain America', 'Some interesting description about captain America', 144, '16+', '2025-02-02', '253525e3-c34f-4e8a-b866-5313808f5e3f_Captain_America_Brave_New_World.jpg');
+INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Captain America', 'Some interesting description about captain America', 144, '16+', '2025-02-02', 'http://localhost:8080/api/movies/poster/253525e3-c34f-4e8a-b866-5313808f5e3f_Captain_America_Brave_New_World.jpg');
+INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Inception', 'A mind-bending thriller', 148, 'PG-13', '2010-07-16', 'https://example.com/inception.jpg');
+
+CREATE TABLE genres
+(
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+INSERT INTO genres (name)
+VALUES ('Action'),
+       ('Adventure'),
+       ('Animation'),
+       ('Comedy'),
+       ('Crime'),
+       ('Documentary'),
+       ('Drama'),
+       ('Fantasy'),
+       ('Historical'),
+       ('Horror'),
+       ('Musical'),
+       ('Mystery'),
+       ('Romance'),
+       ('Sci-Fi'),
+       ('Sports'),
+       ('Thriller'),
+       ('War'),
+       ('Western');
+
+CREATE TABLE movie_genres
+(
+    movie_id INTEGER NOT NULL REFERENCES movies (id) ON DELETE CASCADE,
+    genre_id INTEGER NOT NULL REFERENCES genres (id) ON DELETE CASCADE,
+    PRIMARY KEY (movie_id, genre_id)
+);
+
+INSERT INTO movie_genres(movie_id, genre_id)
+VALUES (1, 1),
+       (1, 2),
+       (1, 8),
+       (2, 14),
+       (2, 16);
 
 -- halls table
 CREATE TABLE halls

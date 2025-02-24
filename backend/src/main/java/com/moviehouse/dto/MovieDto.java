@@ -1,15 +1,14 @@
 package com.moviehouse.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
 import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.EMPTY_POSTER_URL;
+import static com.moviehouse.util.constant.RegexConstant.POSTER_URL_REGEX;
 
 @Data
 public class MovieDto {
@@ -36,6 +35,10 @@ public class MovieDto {
     private LocalDate releaseDate;
 
     @NotBlank(message = EMPTY_POSTER_URL)
+    @Pattern(regexp = POSTER_URL_REGEX, message = INVALID_POSTER_URL)
     private String posterUrl;
+
+    @NotEmpty(message = EMPTY_MOVIE_GENRES)
+    private Set<String> genres;
 }
 

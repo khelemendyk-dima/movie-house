@@ -1,10 +1,10 @@
 package com.moviehouse.service.impl;
 
 import com.moviehouse.dto.MovieDto;
-import com.moviehouse.exceptions.MovieNotFoundException;
-import com.moviehouse.exceptions.PosterNotFoundException;
-import com.moviehouse.exceptions.ServiceException;
+import com.moviehouse.exceptions.*;
+import com.moviehouse.model.Genre;
 import com.moviehouse.model.Movie;
+import com.moviehouse.repository.GenreRepository;
 import com.moviehouse.repository.MovieRepository;
 import com.moviehouse.service.MovieService;
 import com.moviehouse.util.ConvertorUtil;
@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,7 @@ public class MovieServiceImpl implements MovieService {
     private String postersDir;
 
     private final MovieRepository movieRepository;
+    private final GenreRepository genreRepository;
     private final ConvertorUtil convertor;
 
     @Transactional
@@ -44,6 +46,9 @@ public class MovieServiceImpl implements MovieService {
     public MovieDto create(MovieDto movieDto) {
         Movie movieToCreate = convertor.toMovie(movieDto);
         movieToCreate.setId(null);
+
+        Set<Genre> genres = findGenresByNames(movieDto.getGenres());
+        movieToCreate.setGenres(genres);
 
         movieRepository.save(movieToCreate);
 
@@ -54,6 +59,9 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieDto update(Long id, MovieDto movieDto) {
         Movie movieToUpdate = setupMovieToUpdate(id, movieDto);
+
+        Set<Genre> genres = findGenresByNames(movieDto.getGenres());
+        movieToUpdate.setGenres(genres);
 
         movieRepository.save(movieToUpdate);
 
@@ -128,5 +136,16 @@ public class MovieServiceImpl implements MovieService {
     private Movie findMovieById(Long id) {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
+    }
+
+    private Set<Genre> findGenresByNames(Set<String> genreNames) {
+        return genreNames.stream()
+                .map(this::findGenreByName)
+                .collect(Collectors.toSet());
+    }
+
+    private Genre findGenreByName(String genreName) {
+        return genreRepository.findByName(genreName)
+                .orElseThrow(() -> new GenreNotFoundException(genreName));
     }
 }

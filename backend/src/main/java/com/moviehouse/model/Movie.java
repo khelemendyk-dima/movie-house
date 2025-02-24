@@ -1,16 +1,14 @@
 package com.moviehouse.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.util.constant.RegexConstant.POSTER_URL_REGEX;
 
 @Data
 @Entity
@@ -41,9 +39,14 @@ public class Movie {
     private LocalDate releaseDate;
 
     @NotBlank(message = EMPTY_POSTER_URL)
-//    @Pattern(
-//            regexp = "^(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w .-]*)*\\/?$",
-//            message = "Invalid poster URL"
-//    )
+    @Pattern(regexp = POSTER_URL_REGEX, message = INVALID_POSTER_URL)
     private String posterUrl;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_genres",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
 }

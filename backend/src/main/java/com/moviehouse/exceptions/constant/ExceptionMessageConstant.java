@@ -13,6 +13,7 @@ public class ExceptionMessageConstant {
     public static final String POSTER_NOT_FOUND = "Poster='%s' not found";
     public static final String MOVIE_SESSION_BY_ID_NOT_FOUND = "Movie session with id='%s' not found";
     public static final String HALL_BY_ID_NOT_FOUND = "Hall with id='%s' not found";
+    public static final String GENRE_BY_NAME_NOT_FOUND = "Genre with name='%s' not found";
 
     public static final String EMPTY_PASSWORD = "Password is required";
     public static final String EMPTY_EMAIL = "Email is required";
@@ -35,6 +36,7 @@ public class ExceptionMessageConstant {
     public static final String EMPTY_HALL_NAME = "Hall name is required";
     public static final String EMPTY_ROW_NUMBER = "Row number is required";
     public static final String EMPTY_SEAT_NUMBER = "Seat number is required";
+    public static final String EMPTY_MOVIE_GENRES = "Movie must have at least one genre";
 
     public static final String INCORRECT_NAME_FORMAT = "Name must contain only letters and a single space between words";
     public static final String INCORRECT_PASSWORD_FORMAT = "Password must be 8-32 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)";
@@ -51,6 +53,7 @@ public class ExceptionMessageConstant {
     public static final String INVALID_SEATS_PER_ROW = "Seats per row must be at least 1";
     public static final String INVALID_ROW_NUMBER = "Row number must be at least 1";
     public static final String INVALID_SEAT_NUMBER = "Seat number must be at least 1";
+    public static final String INVALID_POSTER_URL = "Poster URL must be a valid URL. For instance, 'https://example.com/image.jpg'";
 
     public static final String NAME_SIZE_EXCEEDED = "Name must not exceed 50 characters";
     public static final String TITLE_SIZE_EXCEEDED = "Title must not exceed 100 characters";

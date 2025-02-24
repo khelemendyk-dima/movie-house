@@ -9,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.ROLE_BY_NAME_NOT_FOUND;
 import static java.lang.String.format;
 
@@ -38,7 +41,15 @@ public class ConvertorUtil {
     }
 
     public MovieDto toMovieDto(Movie movie) {
-        return modelMapper.map(movie, MovieDto.class);
+        MovieDto movieDto = modelMapper.map(movie, MovieDto.class);
+
+        Set<String> genres = movie.getGenres().stream()
+                .map(Genre::getName)
+                .collect(Collectors.toSet());
+
+        movieDto.setGenres(genres);
+
+        return movieDto;
     }
 
     public Movie toMovie(MovieDto movieDto) {
