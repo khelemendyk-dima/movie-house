@@ -39,14 +39,15 @@ INSERT INTO movies(title, description, duration, age_rating, release_date, poste
 -- halls table
 CREATE TABLE halls
 (
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(100) NOT NULL,
-    total_seats INTEGER      NOT NULL
+    id            SERIAL PRIMARY KEY,
+    name          VARCHAR(100) NOT NULL,
+    row_count     INTEGER      NOT NULL,
+    seats_per_row INTEGER      NOT NULL
 );
 
-INSERT INTO halls(name, total_seats) VALUES ('Big Hall 1', 112);
-INSERT INTO halls(name, total_seats) VALUES ('Big Hall 2', 70);
-INSERT INTO halls(name, total_seats) VALUES ('VIP Hall 3', 12);
+INSERT INTO halls(name, row_count, seats_per_row) VALUES ('Big Hall 1', 7, 16);
+INSERT INTO halls(name, row_count, seats_per_row) VALUES ('Big Hall 2', 5, 14);
+INSERT INTO halls(name, row_count, seats_per_row) VALUES ('VIP Hall 3', 3, 4);
 
 -- seats table
 CREATE TABLE seats

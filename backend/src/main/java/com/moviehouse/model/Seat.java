@@ -11,6 +11,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+
 @Data
 @Entity
 @Table(name = "seats")
@@ -20,16 +22,16 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Hall ID must not be null")
+    @NotNull(message = EMPTY_HALL_ID)
     @ManyToOne
     @JoinColumn(name = "hall_id", nullable = false)
     private Hall hall;
 
-    @NotNull(message = "Row number must be specified")
-    @Min(value = 1, message = "Row number must be at least 1")
+    @NotNull(message = EMPTY_ROW_NUMBER)
+    @Min(value = 1, message = INVALID_ROW_NUMBER)
     private Integer rowNumber;
 
-    @NotNull(message = "Seat number must be specified")
-    @Min(value = 1, message = "Seat number must be at least 1")
+    @NotNull(message = EMPTY_SEAT_NUMBER)
+    @Min(value = 1, message = INVALID_SEAT_NUMBER)
     private Integer seatNumber;
 }

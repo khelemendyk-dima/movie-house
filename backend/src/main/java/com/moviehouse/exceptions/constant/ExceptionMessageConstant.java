@@ -30,6 +30,11 @@ public class ExceptionMessageConstant {
     public static final String EMPTY_START_DATE = "Start date is required";
     public static final String EMPTY_END_DATE = "Start date is required";
     public static final String EMPTY_PRICE = "Price is required";
+    public static final String EMPTY_ROW_COUNT = "Row count is required";
+    public static final String EMPTY_SEATS_PER_ROW = "Seats per row is required";
+    public static final String EMPTY_HALL_NAME = "Hall name is required";
+    public static final String EMPTY_ROW_NUMBER = "Row number is required";
+    public static final String EMPTY_SEAT_NUMBER = "Seat number is required";
 
     public static final String INCORRECT_NAME_FORMAT = "Name must contain only letters and a single space between words";
     public static final String INCORRECT_PASSWORD_FORMAT = "Password must be 8-32 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)";
@@ -42,11 +47,16 @@ public class ExceptionMessageConstant {
     public static final String INVALID_START_DATE = "Start date must be in the present or future";
     public static final String INVALID_END_DATE = "End date must be in the future";
     public static final String INVALID_PRICE = "Price must be greater than zero";
+    public static final String INVALID_ROW_COUNT = "Row count must be at least 1";
+    public static final String INVALID_SEATS_PER_ROW = "Seats per row must be at least 1";
+    public static final String INVALID_ROW_NUMBER = "Row number must be at least 1";
+    public static final String INVALID_SEAT_NUMBER = "Seat number must be at least 1";
 
     public static final String NAME_SIZE_EXCEEDED = "Name must not exceed 50 characters";
     public static final String TITLE_SIZE_EXCEEDED = "Title must not exceed 100 characters";
     public static final String DESCRIPTION_SIZE_EXCEEDED = "Description must not exceed 500 characters";
     public static final String AGE_RATING_SIZE_EXCEEDED = "Age must not exceed 10 characters";
+    public static final String HALL_NAME_SIZE_EXCEEDED = "Hall name must not exceed 50 characters";
 
     public static final String PASSWORD_MISMATCH = "Passwords don't match";
     public static final String TOKEN_EXPIRED = "Token expired, please log in again";

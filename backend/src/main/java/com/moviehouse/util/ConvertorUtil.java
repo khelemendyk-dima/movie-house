@@ -1,14 +1,8 @@
 package com.moviehouse.util;
 
-import com.moviehouse.dto.MovieDto;
-import com.moviehouse.dto.MovieSessionDto;
-import com.moviehouse.dto.RegistrationDto;
-import com.moviehouse.dto.UserDto;
+import com.moviehouse.dto.*;
 import com.moviehouse.exceptions.RoleNotFoundException;
-import com.moviehouse.model.Movie;
-import com.moviehouse.model.MovieSession;
-import com.moviehouse.model.Role;
-import com.moviehouse.model.User;
+import com.moviehouse.model.*;
 import com.moviehouse.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -53,5 +47,15 @@ public class ConvertorUtil {
 
     public MovieSessionDto toMovieSessionDto(MovieSession movieSession) {
         return modelMapper.map(movieSession, MovieSessionDto.class);
+    }
+
+    public HallDto toHallDto(Hall hall) {
+        HallDto hallDto = modelMapper.map(hall, HallDto.class);
+
+        hallDto.setSeats(hall.getSeats().stream()
+                .map(seat -> modelMapper.map(seat, SeatDto.class))
+                .toList());
+
+        return hallDto;
     }
 }
