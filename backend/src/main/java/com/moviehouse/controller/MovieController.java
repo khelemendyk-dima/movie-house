@@ -2,6 +2,7 @@ package com.moviehouse.controller;
 
 import com.moviehouse.dto.MovieDto;
 import com.moviehouse.service.MovieService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -9,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -44,9 +46,15 @@ public class MovieController {
         return ResponseEntity.ok(movieService.delete(id));
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadPoster(@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok(movieService.uploadPoster(file));
+    @PostMapping("/poster/upload")
+    public ResponseEntity<String> uploadPoster(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        String fileName = movieService.uploadPoster(file);
+
+        String posterUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath("/api/movies/poster/" + fileName)
+                .toUriString();
+
+        return ResponseEntity.ok(posterUrl);
     }
 
     @GetMapping("/poster/{filename}")
