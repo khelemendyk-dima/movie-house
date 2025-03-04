@@ -145,37 +145,40 @@ END $$;
 CREATE TABLE sessions
 (
     id         SERIAL PRIMARY KEY,
-    movie_id   INTEGER        NOT NULL REFERENCES movies (id),
-    hall_id    INTEGER        NOT NULL REFERENCES halls (id),
+    movie_id   INTEGER        NOT NULL REFERENCES movies (id) ON DELETE CASCADE,
+    hall_id    INTEGER        NOT NULL REFERENCES halls (id) ON DELETE CASCADE,
     start_time TIMESTAMP      NOT NULL,
     price      DECIMAL(10, 2) NOT NULL
 );
 
--- orders table
-CREATE TABLE orders
+-- bookings table
+CREATE TABLE bookings
 (
     id          SERIAL PRIMARY KEY,
-    user_id     INTEGER        NOT NULL REFERENCES users (id),
-    session_id  INTEGER        NOT NULL REFERENCES sessions (id),
-    status      VARCHAR(20)    NOT NULL CHECK (status IN ('RESERVED', 'PAID', 'CANCELLED')),
+    session_id  INTEGER        NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
+    email       VARCHAR(255)   NOT NULL,
+    phone       VARCHAR(20)    NOT NULL,
+    status      VARCHAR(20)    NOT NULL CHECK (status IN ('PENDING', 'PAID', 'CANCELLED')),
     total_price DECIMAL(10, 2) NOT NULL,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- reserved_seats table
-CREATE TABLE reserved_seats
+-- tickets table
+CREATE TABLE tickets
 (
-    id       SERIAL PRIMARY KEY,
-    order_id INTEGER NOT NULL REFERENCES orders (id),
-    seat_id  INTEGER NOT NULL REFERENCES seats (id)
+    id         SERIAL PRIMARY KEY,
+    booking_id INTEGER NOT NULL REFERENCES bookings (id) ON DELETE CASCADE,
+    session_id INTEGER NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
+    seat_id    INTEGER NOT NULL REFERENCES seats (id) ON DELETE CASCADE,
+    qr_code    TEXT,
+    UNIQUE (session_id, seat_id)
 );
 
 -- payments table
 CREATE TABLE payments
 (
     id             SERIAL PRIMARY KEY,
-    order_id       INTEGER     NOT NULL REFERENCES orders (id),
+    booking_id       INTEGER     NOT NULL REFERENCES bookings (id),
     payment_method VARCHAR(20) NOT NULL CHECK (payment_method IN ('STRIPE', 'PAYPAL')),
     payment_status VARCHAR(20) NOT NULL CHECK (payment_status IN ('PENDING', 'COMPLETED', 'FAILED')),
     transaction_id VARCHAR(255),

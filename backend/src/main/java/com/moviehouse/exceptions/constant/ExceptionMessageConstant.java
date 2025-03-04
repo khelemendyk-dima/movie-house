@@ -5,6 +5,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ExceptionMessageConstant {
     public static final String EMAIL_ALREADY_EXISTS = "User with email='%s' is already in use";
+    public static final String SEATS_ALREADY_BOOKED = "Seats already booked: ids=%s";
+    public static final String INVALID_SEATS_FOR_HALL = "Some seats do not belong to the session's hall: sessionId=%s, hallId=%s, seatIds=%s";
 
     public static final String USER_BY_EMAIL_NOT_FOUND = "User with email='%s' not found";
     public static final String USER_BY_ID_NOT_FOUND = "User with id='%s' not found";
@@ -14,6 +16,7 @@ public class ExceptionMessageConstant {
     public static final String MOVIE_SESSION_BY_ID_NOT_FOUND = "Movie session with id='%s' not found";
     public static final String HALL_BY_ID_NOT_FOUND = "Hall with id='%s' not found";
     public static final String GENRE_BY_NAME_NOT_FOUND = "Genre with name='%s' not found";
+    public static final String SEAT_BY_IDS_NOT_FOUND = "Some seats do not exist: ids=%s";
 
     public static final String EMPTY_PASSWORD = "Password is required";
     public static final String EMPTY_EMAIL = "Email is required";
@@ -37,11 +40,17 @@ public class ExceptionMessageConstant {
     public static final String EMPTY_ROW_NUMBER = "Row number is required";
     public static final String EMPTY_SEAT_NUMBER = "Seat number is required";
     public static final String EMPTY_MOVIE_GENRES = "Movie must have at least one genre";
+    public static final String EMPTY_SESSION_ID = "Session ID is required";
+    public static final String EMPTY_PHONE_NUMBER = "Phone number is required";
+    public static final String EMPTY_SEAT_ID = "At least one seat must be selected";
+    public static final String EMPTY_TOTAL_PRICE = "Total price is required";
+    public static final String EMPTY_BOOKING_ID = "Booking ID is required";
 
     public static final String INCORRECT_NAME_FORMAT = "Name must contain only letters and a single space between words";
     public static final String INCORRECT_PASSWORD_FORMAT = "Password must be 8-32 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)";
 
     public static final String INVALID_EMAIL_FORMAT = "Invalid email format";
+    public static final String INVALID_PHONE_FORMAT = "Invalid phone number format";
     public static final String INVALID_LOGIN_DATA = "Invalid username or password";
     public static final String INVALID_TOKEN = "Invalid token";
     public static final String INVALID_DURATION = "Duration must be at least 1 minute";

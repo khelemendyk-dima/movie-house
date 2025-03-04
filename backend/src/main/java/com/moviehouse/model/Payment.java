@@ -1,6 +1,5 @@
 package com.moviehouse.model;
 
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GenerationType;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -27,10 +25,10 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Order ID must not be null")
+    @NotNull(message = "Booking ID must not be null")
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "booking_id", nullable = false)
+    private Booking booking;
 
     @NotBlank(message = "Payment status is required")
     @Pattern(regexp = "^(PENDING|COMPLETED|FAILED|CANCELLED)$",

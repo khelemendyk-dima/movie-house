@@ -69,4 +69,16 @@ public class ConvertorUtil {
 
         return hallDto;
     }
+
+    public BookingDto toBookingDto(Booking booking) {
+        BookingDto bookingDto = modelMapper.map(booking, BookingDto.class);
+
+        bookingDto.setSessionId(booking.getSession().getId());
+
+        bookingDto.setSeatIds(booking.getTickets().stream()
+                .map(ticket -> ticket.getSeat().getId())
+                .toList());
+
+        return bookingDto;
+    }
 }
