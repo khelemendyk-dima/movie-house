@@ -173,15 +173,3 @@ CREATE TABLE tickets
     qr_code    TEXT,
     UNIQUE (session_id, seat_id)
 );
-
--- payments table
-CREATE TABLE payments
-(
-    id             SERIAL PRIMARY KEY,
-    booking_id       INTEGER     NOT NULL REFERENCES bookings (id),
-    payment_method VARCHAR(20) NOT NULL CHECK (payment_method IN ('STRIPE', 'PAYPAL')),
-    payment_status VARCHAR(20) NOT NULL CHECK (payment_status IN ('PENDING', 'COMPLETED', 'FAILED')),
-    transaction_id VARCHAR(255),
-    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);

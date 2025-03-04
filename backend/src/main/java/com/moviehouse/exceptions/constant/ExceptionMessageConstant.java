@@ -17,6 +17,7 @@ public class ExceptionMessageConstant {
     public static final String HALL_BY_ID_NOT_FOUND = "Hall with id='%s' not found";
     public static final String GENRE_BY_NAME_NOT_FOUND = "Genre with name='%s' not found";
     public static final String SEAT_BY_IDS_NOT_FOUND = "Some seats do not exist: ids=%s";
+    public static final String BOOKING_BY_ID_NOT_FOUND = "Booking with id='%s' not found";
 
     public static final String EMPTY_PASSWORD = "Password is required";
     public static final String EMPTY_EMAIL = "Email is required";
@@ -45,6 +46,8 @@ public class ExceptionMessageConstant {
     public static final String EMPTY_SEAT_ID = "At least one seat must be selected";
     public static final String EMPTY_TOTAL_PRICE = "Total price is required";
     public static final String EMPTY_BOOKING_ID = "Booking ID is required";
+    public static final String EMPTY_SUCCESS_URL = "Success URL is required";
+    public static final String EMPTY_CANCEL_URL = "Cancel URL is required";
 
     public static final String INCORRECT_NAME_FORMAT = "Name must contain only letters and a single space between words";
     public static final String INCORRECT_PASSWORD_FORMAT = "Password must be 8-32 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)";
@@ -52,6 +55,7 @@ public class ExceptionMessageConstant {
     public static final String INVALID_EMAIL_FORMAT = "Invalid email format";
     public static final String INVALID_PHONE_FORMAT = "Invalid phone number format";
     public static final String INVALID_LOGIN_DATA = "Invalid username or password";
+    public static final String INVALID_STRIPE_SIGNATURE = "Invalid Stripe signature";
     public static final String INVALID_TOKEN = "Invalid token";
     public static final String INVALID_DURATION = "Duration must be at least 1 minute";
     public static final String INVALID_START_TIME = "Start time must be in the present or future";
@@ -75,6 +79,8 @@ public class ExceptionMessageConstant {
     public static final String ACCESS_DENIED = "Forbidden: You don't have permission to access this resource";
     public static final String FAILED_TO_UPLOAD_POSTER = "Failed to upload poster: %s";
     public static final String FAILED_TO_LOAD_POSTER = "Failed to load poster: %s";
+    public static final String NULL_STRIPE_SESSION = "Stripe session is null";
+    public static final String STRIPE_PAYMENT_FAILED = "Stripe payment problem: %s";
 
     public static final String AUTHENTICATION_ERROR = "Authentication error";
     public static final String SERVER_ERROR = "Internal server error: ";
