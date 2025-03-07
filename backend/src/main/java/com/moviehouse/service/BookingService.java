@@ -7,4 +7,6 @@ public interface BookingService {
     BookingDto createBooking(BookingDto bookingDto);
 
     boolean isBookingPaid(Long bookingId);
+
+    void removeExpiredBookings();
 }

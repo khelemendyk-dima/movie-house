@@ -9,16 +9,23 @@ import com.moviehouse.repository.SeatRepository;
 import com.moviehouse.service.BookingService;
 import com.moviehouse.util.ConvertorUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
+    @Value("${booking.cleanup.expiration-minutes}")
+    private int expirationMinutes;
+
     private final BookingRepository bookingRepository;
     private final MovieSessionRepository movieSessionRepository;
     private final SeatRepository seatRepository;
@@ -39,6 +46,17 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public boolean isBookingPaid(Long bookingId) {
         return bookingRepository.existsByIdAndStatus(bookingId, BookingStatus.PAID);
+    }
+
+    @Transactional
+    @Override
+    public void removeExpiredBookings() {
+        LocalDateTime tenMinutesAgo = LocalDateTime.now().minusMinutes(expirationMinutes);
+        int deletedCount = bookingRepository.deleteExpiredBookings(tenMinutesAgo, BookingStatus.PENDING);
+
+        if (deletedCount > 0) {
+            log.info("Deleted {} expired unpaid bookings.", deletedCount);
+        }
     }
 
     private MovieSession findMovieSessionById(Long id) {
