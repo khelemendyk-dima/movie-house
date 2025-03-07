@@ -2,6 +2,7 @@ package com.moviehouse.service.impl;
 
 import com.moviehouse.dto.MovieSessionDto;
 import com.moviehouse.dto.MovieSessionRegistrationDto;
+import com.moviehouse.dto.SeatStatusDto;
 import com.moviehouse.exceptions.HallNotFoundException;
 import com.moviehouse.exceptions.MovieNotFoundException;
 import com.moviehouse.exceptions.MovieSessionNotFoundException;
@@ -11,6 +12,7 @@ import com.moviehouse.model.MovieSession;
 import com.moviehouse.repository.HallRepository;
 import com.moviehouse.repository.MovieRepository;
 import com.moviehouse.repository.MovieSessionRepository;
+import com.moviehouse.repository.SeatRepository;
 import com.moviehouse.service.MovieSessionService;
 import com.moviehouse.util.ConvertorUtil;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     private final MovieSessionRepository movieSessionRepository;
     private final MovieRepository movieRepository;
     private final HallRepository hallRepository;
+    private final SeatRepository seatRepository;
     private final ConvertorUtil convertor;
 
     @Override
@@ -40,6 +43,14 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     @Override
     public MovieSessionDto getById(Long id) {
         return convertor.toMovieSessionDto(findMovieSessionById(id));
+    }
+
+    @Override
+    public List<SeatStatusDto> getSessionOccupancy(Long sessionId) {
+        // throw exception if not found
+        findMovieSessionById(sessionId);
+
+        return seatRepository.getSeatStatusesBySessionId(sessionId);
     }
 
     @Transactional
