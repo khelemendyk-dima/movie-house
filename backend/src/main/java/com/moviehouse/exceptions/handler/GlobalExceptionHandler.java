@@ -2,6 +2,7 @@ package com.moviehouse.exceptions.handler;
 
 import com.moviehouse.exceptions.AlreadyExistsException;
 import com.moviehouse.exceptions.NotFoundException;
+import com.moviehouse.exceptions.PaymentRequiredException;
 import com.moviehouse.exceptions.ServiceException;
 import com.moviehouse.dto.ErrorDto;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,16 @@ public class GlobalExceptionHandler {
                 HttpStatus.UNAUTHORIZED.value(),
                 INVALID_LOGIN_DATA
         ), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(PaymentRequiredException.class)
+    public ResponseEntity<ErrorDto> handlePaymentRequiredException(PaymentRequiredException e) {
+        log.warn(e.getMessage());
+
+        return new ResponseEntity<>(ErrorDto.createErrorResponse(
+                HttpStatus.PAYMENT_REQUIRED.value(),
+                e.getMessage()
+        ), HttpStatus.PAYMENT_REQUIRED);
     }
 
     @ExceptionHandler(NotFoundException.class)

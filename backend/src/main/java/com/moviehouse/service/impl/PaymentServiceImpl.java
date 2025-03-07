@@ -1,11 +1,14 @@
 package com.moviehouse.service.impl;
 
 import com.moviehouse.dto.PaymentRequest;
+import com.moviehouse.exceptions.BookingAlreadyPaidException;
 import com.moviehouse.exceptions.BookingNotFoundException;
 import com.moviehouse.exceptions.ServiceException;
 import com.moviehouse.model.*;
 import com.moviehouse.repository.BookingRepository;
+import com.moviehouse.service.EmailService;
 import com.moviehouse.service.PaymentService;
+import com.moviehouse.service.TicketService;
 import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
@@ -38,6 +41,8 @@ public class PaymentServiceImpl implements PaymentService {
     private String webhookSecret;
 
     private final BookingRepository bookingRepository;
+    private final TicketService ticketService;
+    private final EmailService emailService;
 
     @PostConstruct
     public void init() {
@@ -65,7 +70,7 @@ public class PaymentServiceImpl implements PaymentService {
             Event event = Webhook.constructEvent(payload, signatureHeader, webhookSecret);
 
             if ("checkout.session.completed".equals(event.getType())) {
-                changeBookingStatusToPaid(event);
+                handleSuccessfulPayment(event);
                 return true;
             }
         } catch (SignatureVerificationException e) {
@@ -75,9 +80,22 @@ public class PaymentServiceImpl implements PaymentService {
         return false;
     }
 
-    private Booking findBookingById(Long id) {
-        return bookingRepository.findById(id)
-                .orElseThrow(() -> new BookingNotFoundException(id));
+    private void handleSuccessfulPayment(Event event) {
+        Booking booking = changeBookingStatusToPaid(event);
+
+        byte[] ticketsPdf = ticketService.generateTicketsPdf(booking.getTickets());
+        ticketService.saveTicketsPdf(ticketsPdf, booking.getId());
+
+        emailService.sendBookingConfirmation(booking.getEmail(), booking);
+    }
+
+    private Booking findBookingById(Long bookingId) {
+        if (bookingRepository.existsByIdAndStatus(bookingId, BookingStatus.PAID)) {
+            throw new BookingAlreadyPaidException(bookingId);
+        }
+
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException(bookingId));
     }
 
     private SessionCreateParams.LineItem createLineItem(Booking booking, Ticket ticket) {
@@ -121,7 +139,8 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
 
-    private void changeBookingStatusToPaid(Event event) {
+    @Transactional
+    public Booking changeBookingStatusToPaid(Event event) {
         Session session = getStripeSession(event);
 
         Long bookingId = Long.parseLong(session.getMetadata().get("bookingId"));
@@ -131,6 +150,8 @@ public class PaymentServiceImpl implements PaymentService {
         bookingRepository.save(booking);
 
         log.info("Booking with id={} marked as PAID", booking.getId());
+
+        return booking;
     }
 
     private Session getStripeSession(Event event) {

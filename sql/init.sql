@@ -170,6 +170,6 @@ CREATE TABLE tickets
     booking_id INTEGER NOT NULL REFERENCES bookings (id) ON DELETE CASCADE,
     session_id INTEGER NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
     seat_id    INTEGER NOT NULL REFERENCES seats (id) ON DELETE CASCADE,
-    qr_code    TEXT,
+    used       BOOLEAN DEFAULT FALSE,
     UNIQUE (session_id, seat_id)
 );

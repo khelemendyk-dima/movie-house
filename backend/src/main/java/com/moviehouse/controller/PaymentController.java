@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
     private final PaymentService paymentService;
 
-    @PostMapping("/create-checkout-session")
+    @PostMapping("/checkout-session")
     public ResponseEntity<String> createCheckoutSession(@RequestBody @Valid PaymentRequest request) {
         String sessionUrl = paymentService.createCheckoutSession(request);
 
         return ResponseEntity.ok(sessionUrl);
     }
 
-    @PostMapping("/webhook")
+    @PostMapping("/stripe-webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody @NotNull String payload,
                                                 @RequestHeader("Stripe-Signature") String signatureHeader) {
         if (paymentService.verifyPayment(payload, signatureHeader)) {

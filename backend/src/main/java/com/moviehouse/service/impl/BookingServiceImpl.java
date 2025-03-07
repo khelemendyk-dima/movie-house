@@ -36,6 +36,11 @@ public class BookingServiceImpl implements BookingService {
         return convertor.toBookingDto(booking);
     }
 
+    @Override
+    public boolean isBookingPaid(Long bookingId) {
+        return bookingRepository.existsByIdAndStatus(bookingId, BookingStatus.PAID);
+    }
+
     private MovieSession findMovieSessionById(Long id) {
         return movieSessionRepository.findById(id)
                 .orElseThrow(() -> new MovieSessionNotFoundException(id));

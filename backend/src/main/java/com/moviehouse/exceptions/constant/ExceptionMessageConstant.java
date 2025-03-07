@@ -6,6 +6,8 @@ import lombok.experimental.UtilityClass;
 public class ExceptionMessageConstant {
     public static final String EMAIL_ALREADY_EXISTS = "User with email='%s' is already in use";
     public static final String SEATS_ALREADY_BOOKED = "Seats already booked: ids=%s";
+    public static final String BOOKING_ALREADY_PAID = "Booking with id='%s' is already paid";
+    public static final String TICKET_IS_USED = "Ticket with id='%s' already used";
     public static final String INVALID_SEATS_FOR_HALL = "Some seats do not belong to the session's hall: sessionId=%s, hallId=%s, seatIds=%s";
 
     public static final String USER_BY_EMAIL_NOT_FOUND = "User with email='%s' not found";
@@ -18,6 +20,8 @@ public class ExceptionMessageConstant {
     public static final String GENRE_BY_NAME_NOT_FOUND = "Genre with name='%s' not found";
     public static final String SEAT_BY_IDS_NOT_FOUND = "Some seats do not exist: ids=%s";
     public static final String BOOKING_BY_ID_NOT_FOUND = "Booking with id='%s' not found";
+    public static final String TICKET_BY_ID_NOT_FOUND = "Ticket with id='%s' not found";
+    public static final String TICKET_PDF_BY_BOOKING_ID_NOT_FOUND = "Ticket PDF not found for booking with id='%s'";
 
     public static final String EMPTY_PASSWORD = "Password is required";
     public static final String EMPTY_EMAIL = "Email is required";
@@ -81,7 +85,10 @@ public class ExceptionMessageConstant {
     public static final String FAILED_TO_LOAD_POSTER = "Failed to load poster: %s";
     public static final String NULL_STRIPE_SESSION = "Stripe session is null";
     public static final String STRIPE_PAYMENT_FAILED = "Stripe payment problem: %s";
+    public static final String BOOKING_NOT_PAID = "Booking with id='%s' not paid successfully";
 
     public static final String AUTHENTICATION_ERROR = "Authentication error";
     public static final String SERVER_ERROR = "Internal server error: ";
+    public static final String TICKET_PDF_READING_ERROR = "Error reading ticket PDF for booking with id='%s' because of '%s'";
+    public static final String TICKET_PDF_SAVING_ERROR = "Error saving ticket PDF for booking with id='%s' because of '%s'";
 }

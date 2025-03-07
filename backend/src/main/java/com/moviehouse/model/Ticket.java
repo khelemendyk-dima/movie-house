@@ -30,6 +30,6 @@ public class Ticket {
     @JoinColumn(name = "seat_id", nullable = false)
     private Seat seat;
 
-    @Column(name = "qr_code")
-    private String qrCode;
+    @Column(nullable = false)
+    private boolean used;
 }
