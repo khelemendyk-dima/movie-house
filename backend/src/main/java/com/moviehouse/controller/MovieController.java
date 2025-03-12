@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,11 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<List<MovieDto>> getAllMovies() {
+    public ResponseEntity<List<MovieDto>> getAllMovies(@RequestParam(required = false) LocalDate date) {
+        if (date != null) {
+            return ResponseEntity.ok(movieService.getUniqueMoviesByDate(date));
+        }
+
         return ResponseEntity.ok(movieService.getAll());
     }
 

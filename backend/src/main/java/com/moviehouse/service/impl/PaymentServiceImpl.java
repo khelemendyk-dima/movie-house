@@ -124,6 +124,7 @@ public class PaymentServiceImpl implements PaymentService {
     private SessionCreateParams buildSessionParams(PaymentRequest paymentRequest, Booking booking, List<SessionCreateParams.LineItem> lineItems) {
         return SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setCustomerEmail(booking.getEmail())
                 .setSuccessUrl(paymentRequest.getSuccessUrl() + "?session_id={CHECKOUT_SESSION_ID}")
                 .setCancelUrl(paymentRequest.getCancelUrl())
                 .addAllLineItem(lineItems)

@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -40,6 +41,13 @@ public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
     private final ConvertorUtil convertor;
+
+    @Override
+    public List<MovieDto> getUniqueMoviesByDate(LocalDate date) {
+        return movieRepository.findUniqueMoviesByDate(date).stream()
+                .map(convertor::toMovieDto)
+                .toList();
+    }
 
     @Transactional
     @Override

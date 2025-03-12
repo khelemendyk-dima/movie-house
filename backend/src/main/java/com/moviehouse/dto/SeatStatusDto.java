@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class SeatStatusDto {
     private Long seatId;
-    private int rowNumber;
-    private int seatNumber;
+    private Integer rowNumber;
+    private Integer seatNumber;
     private String status;
 }
