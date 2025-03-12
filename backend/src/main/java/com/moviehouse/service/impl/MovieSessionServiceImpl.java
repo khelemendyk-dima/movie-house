@@ -41,6 +41,13 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     }
 
     @Override
+    public List<MovieSessionDto> getSessionsByMovieAndDate(Long movieId, LocalDate date) {
+        return movieSessionRepository.findAllByMovieIdAndDate(movieId, date).stream()
+                .map(convertor::toMovieSessionDto)
+                .toList();
+    }
+
+    @Override
     public MovieSessionDto getById(Long id) {
         return convertor.toMovieSessionDto(findMovieSessionById(id));
     }

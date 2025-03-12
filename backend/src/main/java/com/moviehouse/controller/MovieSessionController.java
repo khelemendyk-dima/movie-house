@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,12 @@ public class MovieSessionController {
     private final MovieSessionService movieSessionService;
 
     @GetMapping
-    public ResponseEntity<List<MovieSessionDto>> getAllSessions() {
+    public ResponseEntity<List<MovieSessionDto>> getAllSessions(@RequestParam(required = false) Long movieId,
+                                                                @RequestParam(required = false) LocalDate date) {
+        if (movieId != null && date != null) {
+            return ResponseEntity.ok(movieSessionService.getSessionsByMovieAndDate(movieId, date));
+        }
+
         return ResponseEntity.ok(movieSessionService.getAll());
     }
 

@@ -35,7 +35,9 @@ CREATE TABLE movies
 );
 
 INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Captain America', 'Some interesting description about captain America', 144, '16+', '2025-02-02', 'http://localhost:8080/api/movies/poster/253525e3-c34f-4e8a-b866-5313808f5e3f_Captain_America_Brave_New_World.jpg');
-INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Inception', 'A mind-bending thriller', 148, 'PG-13', '2010-07-16', 'https://example.com/inception.jpg');
+INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Inception', 'A mind-bending thriller', 148, 'PG-13', '2010-07-16', 'http://localhost:8080/api/movies/poster/0ee875f1-be17-48c4-ab73-1132df61f395_iterception.jpg');
+INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Mickey 17', 'Some interesting description about Mickey 17', 139, '16+', '2025-03-01', 'http://localhost:8080/api/movies/poster/3289b88e-b610-45b4-8915-3cec282ca273_mickey_17.webp');
+INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('The Day the Earth Blew Up: A Looney Tunes Movie', 'Some interesting description about The Day the Earth Blew Up: A Looney Tunes Movie', 90, '0+', '2025-02-29', 'http://localhost:8080/api/movies/poster/f94d685e-5ff7-4e4f-8688-9a8b3ac8c399_looney-tunes.jpg');
 
 CREATE TABLE genres
 (

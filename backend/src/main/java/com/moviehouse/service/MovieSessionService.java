@@ -4,10 +4,13 @@ import com.moviehouse.dto.MovieSessionDto;
 import com.moviehouse.dto.MovieSessionRegistrationDto;
 import com.moviehouse.dto.SeatStatusDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MovieSessionService {
     List<MovieSessionDto> getAll();
+
+    List<MovieSessionDto> getSessionsByMovieAndDate(Long movieId, LocalDate date);
 
     MovieSessionDto getById(Long id);
 
