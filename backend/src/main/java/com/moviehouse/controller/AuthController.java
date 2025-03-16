@@ -5,16 +5,17 @@ import com.moviehouse.dto.LoginDto;
 import com.moviehouse.dto.RegistrationDto;
 import com.moviehouse.dto.UserDto;
 import com.moviehouse.service.AuthService;
+import com.moviehouse.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,6 +25,7 @@ public class AuthController {
     private int cookieMaxAge;
 
     private final AuthService authenticationService;
+    private final UserService userService;
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody @Valid RegistrationDto registrationRequest) {
@@ -43,5 +45,16 @@ public class AuthController {
         response.addCookie(jwtCookie);
 
         return ResponseEntity.ok(authDto.getUser());
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        UserDto userDTO = userService.getByEmail(userDetails.getUsername());
+
+        return ResponseEntity.ok(userDTO);
     }
 }
