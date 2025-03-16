@@ -1,12 +1,14 @@
 package com.moviehouse.security;
 
 import com.moviehouse.util.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -37,9 +40,28 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
+        try {
+            jwtUtil.extractUsername(jwt);
+        } catch (ExpiredJwtException e) {
+            log.warn("JWT is expired for the user, clear cookies");
+            clearJwtCookie(response);
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         processAuthentication(jwt, request);
 
         filterChain.doFilter(request, response);
+    }
+
+    private void clearJwtCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwt", "");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 
     private String extractTokenFromCookies(HttpServletRequest request) {
