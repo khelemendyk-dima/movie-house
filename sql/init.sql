@@ -158,6 +158,7 @@ CREATE TABLE bookings
 (
     id          SERIAL PRIMARY KEY,
     session_id  INTEGER        NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
+    name        VARCHAR(50)    NOT NULL,
     email       VARCHAR(255)   NOT NULL,
     phone       VARCHAR(20)    NOT NULL,
     status      VARCHAR(20)    NOT NULL CHECK (status IN ('PENDING', 'PAID', 'CANCELLED')),

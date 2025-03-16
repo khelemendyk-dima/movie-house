@@ -85,6 +85,7 @@ public class BookingServiceImpl implements BookingService {
 
     private Booking createBookingEntity(BookingDto bookingDto, MovieSession session, List<Seat> seats) {
         Booking booking = new Booking();
+        booking.setName(bookingDto.getName());
         booking.setEmail(bookingDto.getEmail());
         booking.setPhone(bookingDto.getPhone());
         booking.setSession(session);

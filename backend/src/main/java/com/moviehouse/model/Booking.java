@@ -33,6 +33,10 @@ public class Booking {
     @JoinColumn(name = "session_id", nullable = false)
     private MovieSession session;
 
+    @NotBlank(message = EMPTY_NAME)
+    @Column(nullable = false)
+    private String name;
+
     @NotBlank(message = EMPTY_EMAIL)
     @Email(message = INVALID_EMAIL_FORMAT)
     @Column(nullable = false)

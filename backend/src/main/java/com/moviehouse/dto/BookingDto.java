@@ -16,6 +16,9 @@ public class BookingDto {
     @NotNull(message = EMPTY_SESSION_ID)
     private Long sessionId;
 
+    @NotBlank(message = EMPTY_NAME)
+    private String name;
+
     @NotBlank(message = EMPTY_EMAIL)
     @Email(message = INVALID_EMAIL_FORMAT)
     private String email;
