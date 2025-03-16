@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,13 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     @Override
     public List<MovieSessionDto> getSessionsByMovieAndDate(Long movieId, LocalDate date) {
         return movieSessionRepository.findAllByMovieIdAndDate(movieId, date).stream()
+                .map(convertor::toMovieSessionDto)
+                .toList();
+    }
+
+    @Override
+    public List<MovieSessionDto> getSessionsByMovieAndStartTimeAfter(Long movieId, LocalDateTime date) {
+        return movieSessionRepository.findAllByMovieIdAndStartTimeAfter(movieId, date).stream()
                 .map(convertor::toMovieSessionDto)
                 .toList();
     }

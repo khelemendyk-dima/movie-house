@@ -15,6 +15,7 @@ import com.itextpdf.layout.properties.BorderRadius;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.VerticalAlignment;
+import com.moviehouse.dto.TicketDto;
 import com.moviehouse.exceptions.*;
 import com.moviehouse.model.Ticket;
 import com.moviehouse.repository.TicketRepository;
@@ -47,6 +48,26 @@ public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
     private final BookingService bookingService;
+
+    @Override
+    public List<TicketDto> getPaidTicketsBySessionId(Long sessionId) {
+        return ticketRepository.findPaidTicketsBySessionId(sessionId).stream()
+                .map((ticket -> {
+                    TicketDto ticketDto = new TicketDto();
+
+                    ticketDto.setUsername(ticket.getBooking().getName());
+                    ticketDto.setPhone(ticket.getBooking().getPhone());
+                    ticketDto.setEmail(ticket.getBooking().getEmail());
+                    ticketDto.setSeatNumber(ticket.getSeat().getSeatNumber());
+                    ticketDto.setRowNumber(ticket.getSeat().getRowNumber());
+                    ticketDto.setUsed(ticket.isUsed());
+                    ticketDto.setCreatedAt(ticket.getBooking().getCreatedAt());
+
+                    return ticketDto;
+
+                }))
+                .toList();
+    }
 
     @Override
     public byte[] generateTicketsPdf(List<Ticket> tickets) {

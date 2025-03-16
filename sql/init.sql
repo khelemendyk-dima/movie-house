@@ -31,7 +31,9 @@ CREATE TABLE movies
     duration     INTEGER      NOT NULL,
     age_rating   VARCHAR(10),
     release_date DATE         NOT NULL,
-    poster_url   TEXT
+    poster_url   TEXT,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    last_modified  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 INSERT INTO movies(title, description, duration, age_rating, release_date, poster_url) VALUES ('Captain America', 'Some interesting description about captain America', 144, '16+', '2025-02-02', 'http://localhost:8080/api/movies/poster/253525e3-c34f-4e8a-b866-5313808f5e3f_Captain_America_Brave_New_World.jpg');

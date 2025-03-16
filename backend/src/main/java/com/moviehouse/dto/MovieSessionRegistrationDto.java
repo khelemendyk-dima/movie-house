@@ -28,7 +28,7 @@ public class MovieSessionRegistrationDto {
     private LocalDate startDate;
 
     @NotNull(message = EMPTY_END_DATE)
-    @Future(message = INVALID_END_DATE)
+    @FutureOrPresent(message = INVALID_END_DATE)
     private LocalDate endDate;
 
     @NotNull(message = EMPTY_PRICE)

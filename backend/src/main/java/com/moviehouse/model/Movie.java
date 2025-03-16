@@ -3,8 +3,11 @@ package com.moviehouse.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
@@ -41,6 +44,14 @@ public class Movie {
     @NotBlank(message = EMPTY_POSTER_URL)
     @Pattern(regexp = POSTER_URL_REGEX, message = INVALID_POSTER_URL)
     private String posterUrl;
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @LastModifiedDate
+    @Column(name = "last_modified")
+    private LocalDateTime lastModified = LocalDateTime.now();
 
     @ManyToMany
     @JoinTable(
