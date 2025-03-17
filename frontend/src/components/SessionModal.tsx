@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { Modal, Box, TextField, Button, FormControl, InputLabel, Select, MenuItem, DialogTitle, IconButton, Typography } from "@mui/material";
+import {
+    Modal, Box, TextField, Button, FormControl, InputLabel, Select,
+    MenuItem, DialogTitle, IconButton, Typography, Alert
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { createSession, updateSession } from "../services/sessionService";
 import { Session } from "../types/Session";
@@ -31,6 +34,8 @@ const SessionModal = ({
         price: 0,
     });
 
+    const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
         if (!isEditing) {
             setFormData({
@@ -42,6 +47,7 @@ const SessionModal = ({
                 price: 0,
             });
         }
+        setError(null);
     }, [isEditing, open]);
 
     useEffect(() => {
@@ -69,10 +75,15 @@ const SessionModal = ({
             } else {
                 await createSession(formData);
             }
-            reloadSessions();
+            await reloadSessions();
             handleClose();
-        } catch (error) {
-            console.error("Failed to save session", error);
+        } catch (error: any) {
+            if (error.response) {
+                console.error("API Error:", error.response.data);
+                setError(error.response.data.message || "An error occurred.");
+            } else {
+                setError("Network error. Please try again.");
+            }
         }
     };
 
@@ -96,6 +107,9 @@ const SessionModal = ({
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
+
+                {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
                 {!isEditing && (
                     <>
                         <TextField

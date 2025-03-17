@@ -6,7 +6,7 @@ import {
     Button,
     DialogTitle,
     IconButton,
-    Typography,
+    Typography, Alert,
 } from "@mui/material";
 import { createHall, updateHall } from "../services/hallService";
 import Hall from "../types/Hall";
@@ -30,8 +30,11 @@ const HallModal = ({
         seatsPerRow: 0,
     });
 
+    const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
         setFormData(hall ?? { id: 0, name: "", rowCount: 0, seatsPerRow: 0 });
+        setError(null);
     }, [hall, open]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,13 +46,22 @@ const HallModal = ({
     };
 
     const handleSubmit = async () => {
-        if (hall) {
-            await updateHall(formData.id, formData);
-        } else {
-            await createHall(formData);
+        try {
+            if (hall) {
+                await updateHall(formData.id, formData);
+            } else {
+                await createHall(formData);
+            }
+            await reloadHalls();
+            handleClose();
+        } catch (error: any) {
+            if (error.response) {
+                console.error("API Error:", error.response.data);
+                setError(error.response.data.message || "An error occurred.");
+            } else {
+                setError("Network error. Please try again.");
+            }
         }
-        await reloadHalls();
-        handleClose();
     };
 
     return (
@@ -76,6 +88,9 @@ const HallModal = ({
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
+
+                {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
                 <TextField
                     fullWidth
                     label="Hall Name"

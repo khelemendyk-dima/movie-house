@@ -7,11 +7,12 @@ import {
     TextField,
     MenuItem,
     Typography,
-    IconButton
+    IconButton, Alert
 } from "@mui/material";
 import { updateUser } from "../services/userService";
 import { User } from "../types/User";
 import CloseIcon from "@mui/icons-material/Close";
+import {createHall, updateHall} from "../services/hallService.ts";
 
 interface UserModalProps {
     open: boolean;
@@ -28,6 +29,8 @@ const UserModal: React.FC<UserModalProps> = ({ open, handleClose, user, reloadUs
         role: "",
     });
 
+    const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
         setFormData(user ?? {
             id: 0,
@@ -35,6 +38,7 @@ const UserModal: React.FC<UserModalProps> = ({ open, handleClose, user, reloadUs
             email: "",
             role: "",
         });
+        setError(null);
     }, [user, open]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,12 +47,20 @@ const UserModal: React.FC<UserModalProps> = ({ open, handleClose, user, reloadUs
     };
 
     const handleSubmit = async () => {
-        if (user) {
-            await updateUser(user.id, formData);
+        try {
+            if (user) {
+                await updateUser(user.id, formData);
+            }
+            await reloadUsers();
+            handleClose();
+        } catch (error: any) {
+            if (error.response) {
+                console.error("API Error:", error.response.data);
+                setError(error.response.data.message || "An error occurred.");
+            } else {
+                setError("Network error. Please try again.");
+            }
         }
-
-        reloadUsers();
-        handleClose();
     };
 
     return (
@@ -71,6 +83,9 @@ const UserModal: React.FC<UserModalProps> = ({ open, handleClose, user, reloadUs
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
+
+                {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+                
                 <TextField name="name" fullWidth label="Name" margin="dense" value={formData.name} onChange={handleChange} />
                 <TextField name="email" fullWidth label="Email" margin="dense" value={formData.email} onChange={handleChange} />
                 <TextField name="role" fullWidth select label="Role" margin="dense" value={formData.role} onChange={handleChange}>
