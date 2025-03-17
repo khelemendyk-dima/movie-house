@@ -8,6 +8,8 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    volumes:
+      - ./static:/app/static
 
   db:
     image: postgres:15
@@ -20,7 +22,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./sql/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql:ro
+      - ./sql/dml.sql:/docker-entrypoint-initdb.d/dml.sql:ro
 
   frontend:
     build: ./frontend
