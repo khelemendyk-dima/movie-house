@@ -6,6 +6,10 @@ export const authMe = async (): Promise<User> => {
     return response.data;
 }
 
+export const logout = async () => {
+    await axiosInstance.post("/auth/logout");
+};
+
 export const fetchUsers = async (): Promise<User[]> => {
     const response = await axiosInstance.get("/users");
     return response.data;

@@ -2,13 +2,14 @@ import { create } from "zustand";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { User } from "../types";
-import {authMe} from "../services/userService.ts";
+import { authMe, logout } from "../services/userService.ts";
 
 interface UserStore {
     user: User | null;
     isLoading: boolean;
     setUser: (user: User) => void;
     fetchUser: () => Promise<void>;
+    logoutUser: () => Promis<void>;
 }
 
 export const useUserStore = create<UserStore>((set) => ({
@@ -25,4 +26,14 @@ export const useUserStore = create<UserStore>((set) => ({
             set({ user: null, isLoading: false });
         }
     },
+
+    logoutUser: async () => {
+        try {
+            await logout();
+            set({ user: null });
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    },
 }));
+
