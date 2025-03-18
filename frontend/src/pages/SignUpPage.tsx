@@ -3,6 +3,7 @@ import { TextField, Button, Typography, Box, Link, IconButton, InputAdornment } 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {createUser} from "../services/userService";
 
 const SignUpPage = () => {
     const [name, setName] = useState("");
@@ -45,16 +46,14 @@ const SignUpPage = () => {
         if (validate()) {
             setLoading(true);
             try {
-                const response = await axios.post("http://localhost:8080/api/auth/register", {
+                const response = await createUser( {
                     name,
                     email,
                     password,
                     confirmPassword,
                 });
 
-                if (response.status === 200) {
-                    navigate("/admin/sign-in");
-                }
+                navigate("/admin/sign-in");
             } catch (error) {
                 console.error("Registration failed", error);
                 setErrors((prevErrors) => ({

@@ -4,6 +4,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../stores/userStore";
+import { login } from "../services/userService";
 
 const SignInPage = () => {
     const [email, setEmail] = useState("");
@@ -31,9 +32,9 @@ const SignInPage = () => {
         if (validate()) {
             setLoading(true);
             try {
-                const response = await axios.post("http://localhost:8080/api/auth/login", { email, password }, { withCredentials: true });
-                const user = response.data;
-                setUser(user); // Сохраняем пользователя в Zustand
+                const response = await login( { email, password } );
+                const user = response.user;
+                setUser(user);
                 navigate("/admin/dashboard");
             } catch (error) {
                 console.error("Login failed", error);
