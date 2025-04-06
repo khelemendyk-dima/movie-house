@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.*;
 import static com.moviehouse.util.constant.RegexConstant.PHONE_NUMBER_REGEX;
 
 @Data

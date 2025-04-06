@@ -1,8 +1,8 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
 import java.util.List;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.SEATS_ALREADY_BOOKED;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.SEATS_ALREADY_BOOKED;
 import static java.lang.String.format;
 
 public class SeatAlreadyBookedException extends AlreadyExistsException {

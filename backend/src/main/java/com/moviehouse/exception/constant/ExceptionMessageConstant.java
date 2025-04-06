@@ -1,4 +1,4 @@
-package com.moviehouse.exceptions.constant;
+package com.moviehouse.exception.constant;
 
 import lombok.experimental.UtilityClass;
 

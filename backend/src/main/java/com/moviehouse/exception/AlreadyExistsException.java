@@ -1,4 +1,4 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
 public class AlreadyExistsException extends ServiceException {
     public AlreadyExistsException(String message) {

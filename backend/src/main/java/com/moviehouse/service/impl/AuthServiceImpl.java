@@ -4,7 +4,7 @@ import com.moviehouse.dto.AuthDto;
 import com.moviehouse.dto.LoginDto;
 import com.moviehouse.dto.RegistrationDto;
 import com.moviehouse.dto.UserDto;
-import com.moviehouse.exceptions.UserNotFoundException;
+import com.moviehouse.exception.UserNotFoundException;
 import com.moviehouse.model.User;
 import com.moviehouse.repository.UserRepository;
 import com.moviehouse.service.AuthService;

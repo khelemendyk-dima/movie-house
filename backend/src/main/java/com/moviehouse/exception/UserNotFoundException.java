@@ -1,7 +1,7 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.USER_BY_EMAIL_NOT_FOUND;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.USER_BY_ID_NOT_FOUND;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.USER_BY_EMAIL_NOT_FOUND;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.USER_BY_ID_NOT_FOUND;
 import static java.lang.String.format;
 
 public class UserNotFoundException extends NotFoundException {

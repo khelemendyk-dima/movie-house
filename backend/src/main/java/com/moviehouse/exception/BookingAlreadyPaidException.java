@@ -1,6 +1,6 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.BOOKING_ALREADY_PAID;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.BOOKING_ALREADY_PAID;
 import static java.lang.String.format;
 
 public class BookingAlreadyPaidException extends AlreadyExistsException {

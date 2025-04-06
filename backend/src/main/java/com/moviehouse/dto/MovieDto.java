@@ -6,8 +6,8 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.EMPTY_POSTER_URL;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.EMPTY_POSTER_URL;
 import static com.moviehouse.util.constant.RegexConstant.POSTER_URL_REGEX;
 
 @Data

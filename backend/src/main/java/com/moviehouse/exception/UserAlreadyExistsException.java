@@ -1,6 +1,6 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.EMAIL_ALREADY_EXISTS;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.EMAIL_ALREADY_EXISTS;
 import static java.lang.String.format;
 
 public class UserAlreadyExistsException extends AlreadyExistsException {

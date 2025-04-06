@@ -1,7 +1,7 @@
 package com.moviehouse.service.impl;
 
 import com.moviehouse.dto.BookingDto;
-import com.moviehouse.exceptions.*;
+import com.moviehouse.exception.*;
 import com.moviehouse.model.*;
 import com.moviehouse.repository.BookingRepository;
 import com.moviehouse.repository.MovieSessionRepository;

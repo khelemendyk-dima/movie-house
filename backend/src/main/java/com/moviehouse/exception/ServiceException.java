@@ -1,4 +1,4 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
 public class ServiceException  extends RuntimeException {
     public ServiceException(String message) {

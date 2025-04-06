@@ -1,7 +1,7 @@
 package com.moviehouse.service.impl;
 
 import com.moviehouse.dto.HallDto;
-import com.moviehouse.exceptions.HallNotFoundException;
+import com.moviehouse.exception.HallNotFoundException;
 import com.moviehouse.model.Hall;
 import com.moviehouse.model.Seat;
 import com.moviehouse.repository.HallRepository;

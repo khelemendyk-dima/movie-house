@@ -16,7 +16,7 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.VerticalAlignment;
 import com.moviehouse.dto.TicketDto;
-import com.moviehouse.exceptions.*;
+import com.moviehouse.exception.*;
 import com.moviehouse.model.Ticket;
 import com.moviehouse.repository.TicketRepository;
 import com.moviehouse.service.BookingService;

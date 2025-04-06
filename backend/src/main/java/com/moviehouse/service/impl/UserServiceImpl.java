@@ -1,8 +1,8 @@
 package com.moviehouse.service.impl;
 
 import com.moviehouse.dto.UserDto;
-import com.moviehouse.exceptions.RoleNotFoundException;
-import com.moviehouse.exceptions.UserNotFoundException;
+import com.moviehouse.exception.RoleNotFoundException;
+import com.moviehouse.exception.UserNotFoundException;
 import com.moviehouse.model.Role;
 import com.moviehouse.model.User;
 import com.moviehouse.repository.RoleRepository;

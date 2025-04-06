@@ -1,7 +1,7 @@
 package com.moviehouse.util;
 
 import com.moviehouse.dto.*;
-import com.moviehouse.exceptions.RoleNotFoundException;
+import com.moviehouse.exception.RoleNotFoundException;
 import com.moviehouse.model.*;
 import com.moviehouse.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.ROLE_BY_NAME_NOT_FOUND;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.ROLE_BY_NAME_NOT_FOUND;
 import static java.lang.String.format;
 
 @Component

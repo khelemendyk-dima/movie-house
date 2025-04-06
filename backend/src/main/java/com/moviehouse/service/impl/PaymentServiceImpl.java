@@ -1,9 +1,9 @@
 package com.moviehouse.service.impl;
 
 import com.moviehouse.dto.PaymentRequest;
-import com.moviehouse.exceptions.BookingAlreadyPaidException;
-import com.moviehouse.exceptions.BookingNotFoundException;
-import com.moviehouse.exceptions.ServiceException;
+import com.moviehouse.exception.BookingAlreadyPaidException;
+import com.moviehouse.exception.BookingNotFoundException;
+import com.moviehouse.exception.ServiceException;
 import com.moviehouse.model.*;
 import com.moviehouse.repository.BookingRepository;
 import com.moviehouse.service.EmailService;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.*;
 import static java.lang.String.format;
 
 @Slf4j

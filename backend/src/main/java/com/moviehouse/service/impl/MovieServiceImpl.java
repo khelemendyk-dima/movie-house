@@ -1,7 +1,7 @@
 package com.moviehouse.service.impl;
 
 import com.moviehouse.dto.MovieDto;
-import com.moviehouse.exceptions.*;
+import com.moviehouse.exception.*;
 import com.moviehouse.model.Genre;
 import com.moviehouse.model.Movie;
 import com.moviehouse.repository.GenreRepository;
@@ -27,8 +27,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.FAILED_TO_LOAD_POSTER;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.FAILED_TO_UPLOAD_POSTER;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.FAILED_TO_LOAD_POSTER;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.FAILED_TO_UPLOAD_POSTER;
 import static java.lang.String.format;
 
 @Service

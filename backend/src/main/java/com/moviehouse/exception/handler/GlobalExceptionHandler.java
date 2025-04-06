@@ -1,9 +1,9 @@
-package com.moviehouse.exceptions.handler;
+package com.moviehouse.exception.handler;
 
-import com.moviehouse.exceptions.AlreadyExistsException;
-import com.moviehouse.exceptions.NotFoundException;
-import com.moviehouse.exceptions.PaymentRequiredException;
-import com.moviehouse.exceptions.ServiceException;
+import com.moviehouse.exception.AlreadyExistsException;
+import com.moviehouse.exception.NotFoundException;
+import com.moviehouse.exception.PaymentRequiredException;
+import com.moviehouse.exception.ServiceException;
 import com.moviehouse.dto.ErrorDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Objects;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.INVALID_LOGIN_DATA;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.SERVER_ERROR;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.INVALID_LOGIN_DATA;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.SERVER_ERROR;
 
 @Slf4j
 @RestControllerAdvice

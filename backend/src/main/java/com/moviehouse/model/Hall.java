@@ -17,12 +17,12 @@ import lombok.ToString;
 
 import java.util.List;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.EMPTY_HALL_NAME;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.HALL_NAME_SIZE_EXCEEDED;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.INVALID_ROW_COUNT;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.EMPTY_ROW_COUNT;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.EMPTY_SEATS_PER_ROW;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.INVALID_SEATS_PER_ROW;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.EMPTY_HALL_NAME;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.HALL_NAME_SIZE_EXCEEDED;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.INVALID_ROW_COUNT;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.EMPTY_ROW_COUNT;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.EMPTY_SEATS_PER_ROW;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.INVALID_SEATS_PER_ROW;
 
 @Data
 @Entity

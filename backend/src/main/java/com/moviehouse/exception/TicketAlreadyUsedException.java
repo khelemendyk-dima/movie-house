@@ -1,6 +1,6 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.TICKET_IS_USED;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.TICKET_IS_USED;
 import static java.lang.String.format;
 
 public class TicketAlreadyUsedException extends AlreadyExistsException {

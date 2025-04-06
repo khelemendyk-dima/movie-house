@@ -1,8 +1,8 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
 import java.util.List;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.INVALID_SEATS_FOR_HALL;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.INVALID_SEATS_FOR_HALL;
 import static java.lang.String.format;
 
 public class InvalidSeatForHallException extends ServiceException {

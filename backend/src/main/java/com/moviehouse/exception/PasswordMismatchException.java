@@ -1,6 +1,6 @@
-package com.moviehouse.exceptions;
+package com.moviehouse.exception;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.PASSWORD_MISMATCH;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.PASSWORD_MISMATCH;
 
 public class PasswordMismatchException extends ServiceException {
     public PasswordMismatchException() {

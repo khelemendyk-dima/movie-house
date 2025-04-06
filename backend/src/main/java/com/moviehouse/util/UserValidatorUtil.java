@@ -1,7 +1,7 @@
 package com.moviehouse.util;
 
-import com.moviehouse.exceptions.PasswordMismatchException;
-import com.moviehouse.exceptions.UserAlreadyExistsException;
+import com.moviehouse.exception.PasswordMismatchException;
+import com.moviehouse.exception.UserAlreadyExistsException;
 import com.moviehouse.model.User;
 import com.moviehouse.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
