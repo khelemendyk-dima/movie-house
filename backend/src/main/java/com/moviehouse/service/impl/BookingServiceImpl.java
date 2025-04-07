@@ -34,37 +34,55 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     @Override
     public BookingDto createBooking(BookingDto bookingDto) {
+        log.info("Creating booking for sessionId={} with seats={}", bookingDto.getSessionId(), bookingDto.getSeatIds());
+
         MovieSession session = findMovieSessionById(bookingDto.getSessionId());
         List<Seat> seats = validateSeats(bookingDto.getSeatIds(), session);
 
         Booking booking = createBookingEntity(bookingDto, session, seats);
         bookingRepository.save(booking);
 
+        log.info("Booking created successfully with id={}", booking.getId());
+
         return convertor.toBookingDto(booking);
     }
 
     @Override
     public boolean isBookingPaid(Long bookingId) {
-        return bookingRepository.existsByIdAndStatus(bookingId, BookingStatus.PAID);
+        log.debug("Checking if booking with id={} is paid", bookingId);
+
+        boolean isPaid = bookingRepository.existsByIdAndStatus(bookingId, BookingStatus.PAID);
+
+        log.debug("Booking with id={} isPaid={}", bookingId, isPaid);
+
+        return isPaid;
     }
 
     @Transactional
     @Override
     public void removeExpiredBookings() {
+        log.info("Removing expired unpaid bookings older than {} minutes", expirationMinutes);
+
         LocalDateTime tenMinutesAgo = LocalDateTime.now().minusMinutes(expirationMinutes);
         int deletedCount = bookingRepository.deleteExpiredBookings(tenMinutesAgo, BookingStatus.PENDING);
 
         if (deletedCount > 0) {
             log.info("Deleted {} expired unpaid bookings.", deletedCount);
+        } else {
+            log.debug("No expired unpaid bookings found to delete.");
         }
     }
 
     private MovieSession findMovieSessionById(Long id) {
+        log.debug("Finding movie session with id={}", id);
+
         return movieSessionRepository.findById(id)
                 .orElseThrow(() -> new MovieSessionNotFoundException(id));
     }
 
     private List<Seat> validateSeats(List<Long> seatIds, MovieSession session) {
+        log.debug("Validating seats={} for sessionId={}", seatIds, session.getId());
+
         List<Seat> seats = seatRepository.findAllById(seatIds);
 
         if (seats.size() != seatIds.size()) {
@@ -80,10 +98,14 @@ public class BookingServiceImpl implements BookingService {
             throw new SeatAlreadyBookedException(seatIds);
         }
 
+        log.debug("All seats are valid and available for sessionId={}", session.getId());
+
         return seats;
     }
 
     private Booking createBookingEntity(BookingDto bookingDto, MovieSession session, List<Seat> seats) {
+        log.debug("Creating booking entity for sessionId={} with seats={}", session.getId(), seats);
+
         Booking booking = new Booking();
         booking.setName(bookingDto.getName());
         booking.setEmail(bookingDto.getEmail());
@@ -98,10 +120,14 @@ public class BookingServiceImpl implements BookingService {
         booking.setTickets(tickets);
         booking.setTotalPrice(calculateTotalPrice(tickets, session));
 
+        log.debug("Booking entity created successfully for sessionId={}", session.getId());
+
         return booking;
     }
 
     private static Ticket createTicketEntity(MovieSession session, Seat seat, Booking booking) {
+        log.debug("Creating ticket for seatId={} in sessionId={}", seat.getId(), session.getId());
+
         Ticket ticket = new Ticket();
         ticket.setSession(session);
         ticket.setBooking(booking);
@@ -111,6 +137,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private BigDecimal calculateTotalPrice(List<Ticket> tickets, MovieSession session) {
-        return BigDecimal.valueOf(tickets.size()).multiply(session.getPrice());
+        BigDecimal totalPrice = BigDecimal.valueOf(tickets.size()).multiply(session.getPrice());
+
+        log.debug("Calculated total price={} for {} tickets in sessionId={}", totalPrice, tickets.size(), session.getId());
+
+        return totalPrice;
     }
 }

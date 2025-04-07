@@ -8,11 +8,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/halls")
 @RequiredArgsConstructor
@@ -26,7 +28,9 @@ public class HallController {
     })
     @GetMapping
     public ResponseEntity<List<HallDto>> getAllHalls() {
-        return ResponseEntity.ok(hallService.getAll());
+        log.info("Received request to get all halls");
+
+        return ResponseEntity.ok(hallService.getAllHalls());
     }
 
     @Operation(summary = "Get hall details by ID")
@@ -36,7 +40,9 @@ public class HallController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<HallDto> getHallById(@PathVariable Long id) {
-        return ResponseEntity.ok(hallService.getById(id));
+        log.info("Received request to get hall by id={}", id);
+
+        return ResponseEntity.ok(hallService.getHallById(id));
     }
 
     @Operation(summary = "Create a new hall")
@@ -46,7 +52,9 @@ public class HallController {
     })
     @PostMapping
     public ResponseEntity<HallDto> createHall(@RequestBody @Valid HallDto dto) {
-        return ResponseEntity.ok(hallService.create(dto));
+        log.info("Received request to create a new hall with name='{}'", dto.getName());
+
+        return ResponseEntity.ok(hallService.createHall(dto));
     }
 
     @Operation(summary = "Update hall details")
@@ -57,7 +65,9 @@ public class HallController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<HallDto> updateHall(@PathVariable Long id, @RequestBody @Valid HallDto dto) {
-        return ResponseEntity.ok(hallService.update(id, dto));
+        log.info("Received request to update hall by id={}", id);
+
+        return ResponseEntity.ok(hallService.updateHall(id, dto));
     }
 
     @Operation(summary = "Delete a hall")
@@ -67,6 +77,8 @@ public class HallController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<HallDto> deleteHall(@PathVariable Long id) {
-        return ResponseEntity.ok(hallService.delete(id));
+        log.info("Received request to delete hall by id={}", id);
+
+        return ResponseEntity.ok(hallService.deleteHall(id));
     }
 }

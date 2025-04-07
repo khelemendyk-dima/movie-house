@@ -10,7 +10,10 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.BorderRadius;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
@@ -21,7 +24,9 @@ import com.moviehouse.model.Ticket;
 import com.moviehouse.repository.TicketRepository;
 import com.moviehouse.service.BookingService;
 import com.moviehouse.service.TicketService;
+import com.moviehouse.util.ConvertorUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +38,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -48,29 +54,25 @@ public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
     private final BookingService bookingService;
+    private final ConvertorUtil convertor;
 
     @Override
     public List<TicketDto> getPaidTicketsBySessionId(Long sessionId) {
-        return ticketRepository.findPaidTicketsBySessionId(sessionId).stream()
-                .map((ticket -> {
-                    TicketDto ticketDto = new TicketDto();
+        log.info("Fetching paid tickets for sessionId: {}", sessionId);
 
-                    ticketDto.setUsername(ticket.getBooking().getName());
-                    ticketDto.setPhone(ticket.getBooking().getPhone());
-                    ticketDto.setEmail(ticket.getBooking().getEmail());
-                    ticketDto.setSeatNumber(ticket.getSeat().getSeatNumber());
-                    ticketDto.setRowNumber(ticket.getSeat().getRowNumber());
-                    ticketDto.setUsed(ticket.isUsed());
-                    ticketDto.setCreatedAt(ticket.getBooking().getCreatedAt());
-
-                    return ticketDto;
-
-                }))
+        List<TicketDto> tickets = ticketRepository.findPaidTicketsBySessionId(sessionId).stream()
+                .map(convertor::toTicketDto)
                 .toList();
+
+        log.info("Found {} paid tickets for sessionId: {}", tickets.size(), sessionId);
+
+        return tickets;
     }
 
     @Override
     public byte[] generateTicketsPdf(List<Ticket> tickets) {
+        log.info("Generating Ticket PDF for {} tickets", tickets.size());
+
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             PdfWriter writer = new PdfWriter(outputStream);
             PdfDocument pdf = new PdfDocument(writer);
@@ -94,7 +96,6 @@ public class TicketServiceImpl implements TicketService {
                 Table table = new Table(new float[]{4, 2}).useAllAvailableWidth();
                 table.setBackgroundColor(bgColor);
                 table.setPadding(10);
-
                 table.setBorderRadius(new BorderRadius(10));
 
                 // Left side: Movie info
@@ -142,20 +143,28 @@ public class TicketServiceImpl implements TicketService {
             }
 
             document.close();
+
+            log.info("PDF generation completed");
+
             return outputStream.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException("Error generating PDF", e);
+            log.error("Error generating PDF: {}", e.getMessage(), e);
+            throw new ServiceException("Error generating PDF: " + e.getMessage());
         }
     }
 
     @Override
     public void saveTicketsPdf(byte[] pdf, Long bookingId) {
+        log.info("Saving Ticket PDF for bookingId: {}", bookingId);
+
         try {
             String fileName = "ticket-" + bookingId + ".pdf";
             Path path = Paths.get(ticketsDir).resolve(fileName);
 
             Files.createDirectories(path.getParent());
             Files.write(path, pdf);
+
+            log.info("Ticket PDF for bookingId={} saved successfully at path: {}", bookingId, path);
         } catch (IOException e) {
             throw new TicketSaveException(bookingId, e.getMessage());
         }
@@ -163,6 +172,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public byte[] getTicketsPdf(Long bookingId) {
+        log.info("Retrieving ticket PDF for bookingId: {}", bookingId);
+
         checkBookingIsPaid(bookingId);
 
         String fileName = "ticket-" + bookingId + ".pdf";
@@ -173,7 +184,10 @@ public class TicketServiceImpl implements TicketService {
         }
 
         try {
-            return Files.readAllBytes(path);
+            byte[] pdfBytes = Files.readAllBytes(path);
+            log.info("Successfully retrieved PDF for bookingId: {}", bookingId);
+
+            return pdfBytes;
         } catch (IOException e) {
             throw new TicketReadException(bookingId, e.getMessage());
         }
@@ -182,6 +196,8 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     @Override
     public void validateTicket(Long ticketId) {
+        log.info("Validating ticket with id={}", ticketId);
+
         Ticket ticket = findTicketById(ticketId);
 
         checkBookingIsPaid(ticket.getBooking().getId());
@@ -189,14 +205,20 @@ public class TicketServiceImpl implements TicketService {
 
         ticket.setUsed(true);
         ticketRepository.save(ticket);
+
+        log.info("Ticket with id={} marked as used", ticketId);
     }
 
     private Ticket findTicketById(Long ticketId) {
+        log.info("Searching ticket with id={}", ticketId);
+
         return ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketNotFoundException(ticketId));
     }
 
     private void checkBookingIsPaid(Long bookingId) {
+        log.info("Checking if booking with id={} is paid", bookingId);
+
         if (!bookingService.isBookingPaid(bookingId)) {
             throw new BookingNotPaidException(bookingId);
         }

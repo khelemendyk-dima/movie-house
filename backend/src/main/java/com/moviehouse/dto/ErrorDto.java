@@ -11,17 +11,9 @@ import java.io.IOException;
 @Data
 @Builder
 public class ErrorDto {
-    Integer status;
-    Long timestamp;
-    String message;
-
-    public static ErrorDto createErrorResponse(Integer status, String message) {
-        return ErrorDto.builder()
-                .status(status)
-                .timestamp(System.currentTimeMillis())
-                .message(message)
-                .build();
-    }
+    private Integer status;
+    private Long timestamp;
+    private String message;
 
     public static void handleException(HttpServletResponse response, Integer status, String message) throws IOException {
         response.setStatus(status);

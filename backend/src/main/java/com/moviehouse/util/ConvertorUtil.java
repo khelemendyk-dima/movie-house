@@ -81,4 +81,18 @@ public class ConvertorUtil {
 
         return bookingDto;
     }
+
+    public TicketDto toTicketDto(Ticket ticket) {
+        TicketDto ticketDto = new TicketDto();
+
+        ticketDto.setUsername(ticket.getBooking().getName());
+        ticketDto.setPhone(ticket.getBooking().getPhone());
+        ticketDto.setEmail(ticket.getBooking().getEmail());
+        ticketDto.setSeatNumber(ticket.getSeat().getSeatNumber());
+        ticketDto.setRowNumber(ticket.getSeat().getRowNumber());
+        ticketDto.setUsed(ticket.isUsed());
+        ticketDto.setCreatedAt(ticket.getBooking().getCreatedAt());
+
+        return ticketDto;
+    }
 }

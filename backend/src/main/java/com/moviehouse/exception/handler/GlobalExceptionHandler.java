@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleSpringValidationException(MethodArgumentNotValidException e) {
         log.warn(e.getMessage());
 
-        return new ResponseEntity<>(ErrorDto.createErrorResponse(
+        return new ResponseEntity<>(createErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 Objects.requireNonNull(e.getFieldError()).getDefaultMessage()
         ), HttpStatus.BAD_REQUEST);
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleServiceException(ServiceException e) {
         log.warn(e.getMessage());
 
-        return new ResponseEntity<>(ErrorDto.createErrorResponse(
+        return new ResponseEntity<>(createErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 e.getMessage()
         ), HttpStatus.BAD_REQUEST);
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleBadCredentialsException(BadCredentialsException e) {
         log.warn(e.getMessage());
 
-        return new ResponseEntity<>(ErrorDto.createErrorResponse(
+        return new ResponseEntity<>(createErrorResponse(
                 HttpStatus.UNAUTHORIZED.value(),
                 INVALID_LOGIN_DATA
         ), HttpStatus.UNAUTHORIZED);
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handlePaymentRequiredException(PaymentRequiredException e) {
         log.warn(e.getMessage());
 
-        return new ResponseEntity<>(ErrorDto.createErrorResponse(
+        return new ResponseEntity<>(createErrorResponse(
                 HttpStatus.PAYMENT_REQUIRED.value(),
                 e.getMessage()
         ), HttpStatus.PAYMENT_REQUIRED);
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleNotFoundException(NotFoundException e) {
         log.warn(e.getMessage());
 
-        return new ResponseEntity<>(ErrorDto.createErrorResponse(
+        return new ResponseEntity<>(createErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 e.getMessage()
         ), HttpStatus.NOT_FOUND);
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleAlreadyExistsException(AlreadyExistsException e) {
         log.warn(e.getMessage());
 
-        return new ResponseEntity<>(ErrorDto.createErrorResponse(
+        return new ResponseEntity<>(createErrorResponse(
                 HttpStatus.CONFLICT.value(),
                 e.getMessage()
         ), HttpStatus.CONFLICT);
@@ -86,9 +86,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleGenericException(Exception e) {
         log.error(e.getMessage());
 
-        return new ResponseEntity<>(ErrorDto.createErrorResponse(
+        return new ResponseEntity<>(createErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 SERVER_ERROR + e.getMessage()
         ), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public static ErrorDto createErrorResponse(Integer status, String message) {
+        return ErrorDto.builder()
+                .status(status)
+                .timestamp(System.currentTimeMillis())
+                .message(message)
+                .build();
     }
 }

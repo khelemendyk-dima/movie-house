@@ -8,11 +8,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -26,7 +28,9 @@ public class UserController {
     })
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAll());
+        log.info("Received request to get all users");
+
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @Operation(summary = "Get user by ID")
@@ -36,7 +40,9 @@ public class UserController {
     })
     @GetMapping("{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.getById(id));
+        log.info("Received request to get user by id={}", id);
+
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @Operation(summary = "Update user")
@@ -48,7 +54,9 @@ public class UserController {
     @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id,
                                               @RequestBody @Valid UserDto userDto) {
-        return ResponseEntity.ok(userService.update(id, userDto));
+        log.info("Received request to update user with id={}", id);
+
+        return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
     @Operation(summary = "Delete user")
@@ -58,6 +66,8 @@ public class UserController {
     })
     @DeleteMapping("{id}")
     public ResponseEntity<UserDto> deleteUser(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.delete(id));
+        log.info("Received request to delete user with id={}", id);
+
+        return ResponseEntity.ok(userService.deleteUser(id));
     }
 }

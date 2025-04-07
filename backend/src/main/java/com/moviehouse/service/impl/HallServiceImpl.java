@@ -8,12 +8,14 @@ import com.moviehouse.repository.HallRepository;
 import com.moviehouse.service.HallService;
 import com.moviehouse.util.ConvertorUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class HallServiceImpl implements HallService {
@@ -21,20 +23,26 @@ public class HallServiceImpl implements HallService {
     private final ConvertorUtil convertor;
 
     @Override
-    public List<HallDto> getAll() {
+    public List<HallDto> getAllHalls() {
+        log.info("Fetching all halls");
+
         return hallRepository.findAll().stream()
                 .map(convertor::toHallDto)
                 .toList();
     }
 
     @Override
-    public HallDto getById(Long id) {
+    public HallDto getHallById(Long id) {
+        log.info("Fetching hall with id={}", id);
+
         return convertor.toHallDto(findHallById(id));
     }
 
     @Transactional
     @Override
-    public HallDto create(HallDto hallDto) {
+    public HallDto createHall(HallDto hallDto) {
+        log.info("Creating new hall: {}", hallDto);
+
         Hall hall = new Hall();
         hall.setName(hallDto.getName());
         hall.setRowCount(hallDto.getRowCount());
@@ -46,46 +54,58 @@ public class HallServiceImpl implements HallService {
 
         hallRepository.save(hall);
 
+        log.info("Created hall with id={}", hall.getId());
+
         return convertor.toHallDto(hall);
     }
 
     @Transactional
     @Override
-    public HallDto update(Long id, HallDto hallDto) {
+    public HallDto updateHall(Long id, HallDto hallDto) {
+        log.info("Updating hall with id={}", id);
+
         Hall hall = findHallById(id);
 
         hall.setName(hallDto.getName());
         hall.setRowCount(hallDto.getRowCount());
         hall.setSeatsPerRow(hallDto.getSeatsPerRow());
 
-        // delete previous seats
+        log.debug("Clearing previous seats for hall id={}", id);
         hall.getSeats().clear();
 
         List<Seat> newSeats = generateSeats(hallDto.getRowCount(), hallDto.getSeatsPerRow(), hall);
-
         hall.getSeats().addAll(newSeats);
 
         hallRepository.save(hall);
+
+        log.info("Updated hall with id={}", id);
 
         return convertor.toHallDto(hall);
     }
 
     @Transactional
     @Override
-    public HallDto delete(Long id) {
-        Hall hall = findHallById(id);
+    public HallDto deleteHall(Long id) {
+        log.info("Deleting hall with id={}", id);
 
+        Hall hall = findHallById(id);
         hallRepository.delete(hall);
+
+        log.info("Deleted hall with id={}", id);
 
         return convertor.toHallDto(hall);
     }
 
     private Hall findHallById(Long id) {
+        log.debug("Searching for hall with id={}", id);
+
         return hallRepository.findById(id)
                 .orElseThrow(() -> new HallNotFoundException(id));
     }
 
     private List<Seat> generateSeats(int rowCount, int seatsPerRow, Hall hall) {
+        log.debug("Generating seats for hall: rowCount={}, seatsPerRow={}", rowCount, seatsPerRow);
+
         return IntStream.rangeClosed(1, rowCount)
                 .boxed()
                 .flatMap(row -> IntStream.rangeClosed(1, seatsPerRow)

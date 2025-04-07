@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface HallService {
 
-    List<HallDto> getAll();
+    List<HallDto> getAllHalls();
 
-    HallDto getById(Long id);
+    HallDto getHallById(Long id);
 
-    HallDto create(HallDto hallDto);
+    HallDto createHall(HallDto hallDto);
 
-    HallDto update(Long id, HallDto hallDto);
+    HallDto updateHall(Long id, HallDto hallDto);
 
-    HallDto delete(Long id);
+    HallDto deleteHall(Long id);
 
 }

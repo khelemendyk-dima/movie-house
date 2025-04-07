@@ -51,6 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public String createCheckoutSession(PaymentRequest paymentRequest) {
+        log.info("Creating checkout session for bookingId: {}", paymentRequest.getBookingId());
         Booking booking = findBookingById(paymentRequest.getBookingId());
 
         List<SessionCreateParams.LineItem> lineItems = booking.getTickets().stream()
@@ -59,18 +60,24 @@ public class PaymentServiceImpl implements PaymentService {
 
         SessionCreateParams params = buildSessionParams(paymentRequest, booking, lineItems);
 
-        return createPaymentUrl(params);
+        String paymentUrl = createPaymentUrl(params);
+        log.debug("Created payment URL: {}", paymentUrl);
+
+        return paymentUrl;
     }
 
     @Transactional
     @Override
     public boolean verifyPayment(String payload, String signatureHeader) {
-        try {
+        log.info("Verifying payment with payload and signature header");
 
+        try {
             Event event = Webhook.constructEvent(payload, signatureHeader, webhookSecret);
 
             if ("checkout.session.completed".equals(event.getType())) {
                 handleSuccessfulPayment(event);
+                log.info("Payment session completed successfully");
+
                 return true;
             }
         } catch (SignatureVerificationException e) {
@@ -81,15 +88,20 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private void handleSuccessfulPayment(Event event) {
+        log.info("Handling successful payment eventId: {}", event.getId());
+
         Booking booking = changeBookingStatusToPaid(event);
 
         byte[] ticketsPdf = ticketService.generateTicketsPdf(booking.getTickets());
         ticketService.saveTicketsPdf(ticketsPdf, booking.getId());
 
         emailService.sendBookingConfirmation(booking.getEmail(), booking);
+        log.info("Booking confirmation sent to email: {}", booking.getEmail());
     }
 
     private Booking findBookingById(Long bookingId) {
+        log.info("Searching booking with id={}", bookingId);
+
         if (bookingRepository.existsByIdAndStatus(bookingId, BookingStatus.PAID)) {
             throw new BookingAlreadyPaidException(bookingId);
         }
@@ -101,6 +113,9 @@ public class PaymentServiceImpl implements PaymentService {
     private SessionCreateParams.LineItem createLineItem(Booking booking, Ticket ticket) {
         MovieSession session = booking.getSession();
         Movie movie = session.getMovie();
+
+        log.debug("Creating line item for ticket (Seat: {}, Row: {}) for movie: {}", ticket.getSeat().getSeatNumber(),
+                ticket.getSeat().getRowNumber(), movie.getTitle());
 
         return SessionCreateParams.LineItem.builder()
                 .setQuantity(1L)
@@ -122,6 +137,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private SessionCreateParams buildSessionParams(PaymentRequest paymentRequest, Booking booking, List<SessionCreateParams.LineItem> lineItems) {
+        log.debug("Building session parameters for paymentRequest: {}", paymentRequest);
+
         return SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(booking.getEmail())
@@ -134,16 +151,19 @@ public class PaymentServiceImpl implements PaymentService {
 
     private static String createPaymentUrl(SessionCreateParams params) {
         try {
+            log.info("Creating payment session with Stripe");
             return Session.create(params).getUrl();
         } catch (StripeException e) {
+            log.error("Stripe payment session creation failed: {}", e.getMessage());
             throw new ServiceException(format(STRIPE_PAYMENT_FAILED, e.getMessage()));
         }
     }
 
     @Transactional
     public Booking changeBookingStatusToPaid(Event event) {
-        Session session = getStripeSession(event);
+        log.info("Changing booking status to PAID for eventId: {}", event.getId());
 
+        Session session = getStripeSession(event);
         Long bookingId = Long.parseLong(session.getMetadata().get("bookingId"));
 
         Booking booking = findBookingById(bookingId);
@@ -156,6 +176,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private Session getStripeSession(Event event) {
+        log.debug("Retrieving Stripe session from eventId: {}", event.getId());
+
         return (Session) event
                 .getDataObjectDeserializer()
                 .getObject()

@@ -9,11 +9,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/bookings")
 @RequiredArgsConstructor
@@ -30,6 +32,8 @@ public class BookingController {
     })
     @PostMapping
     public ResponseEntity<BookingDto> createBooking(@RequestBody @Valid BookingDto dto) {
+        log.info("Received request to create booking with email={}, sessionId={}, seatIds={}", dto.getEmail(), dto.getSessionId(), dto.getSeatIds());
+
         return ResponseEntity.ok(bookingService.createBooking(dto));
     }
 
@@ -41,6 +45,8 @@ public class BookingController {
     })
     @GetMapping("/{bookingId}/tickets/download")
     public ResponseEntity<byte[]> downloadTickets(@PathVariable Long bookingId) {
+        log.info("Received request to download tickets by bookingId={}", bookingId);
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tickets.pdf")
                 .contentType(MediaType.APPLICATION_PDF)

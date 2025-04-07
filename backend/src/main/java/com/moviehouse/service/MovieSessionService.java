@@ -9,19 +9,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MovieSessionService {
-    List<MovieSessionDto> getAll();
+    List<MovieSessionDto> getAllMovieSessions();
 
-    List<MovieSessionDto> getSessionsByMovieAndDate(Long movieId, LocalDate date);
+    List<MovieSessionDto> getAllMovieSessionsByMovieAndDate(Long movieId, LocalDate date);
 
-    List<MovieSessionDto> getSessionsByMovieAndStartTimeAfter(Long movieId, LocalDateTime date);
+    List<MovieSessionDto> getAllMovieSessionsByMovieAndStartTimeAfter(Long movieId, LocalDateTime startTime);
 
-    MovieSessionDto getById(Long id);
+    MovieSessionDto getMovieSessionById(Long id);
 
-    List<SeatStatusDto> getSessionOccupancy(Long sessionId);
+    List<SeatStatusDto> getMovieSessionOccupancy(Long sessionId);
 
-    List<MovieSessionDto> create(MovieSessionRegistrationDto movieSessionDto);
+    List<MovieSessionDto> createMovieSession(MovieSessionRegistrationDto movieSessionDto);
 
-    MovieSessionDto update(Long id, MovieSessionDto movieSessionDto);
+    MovieSessionDto updateMovieSession(Long id, MovieSessionDto movieSessionDto);
 
-    MovieSessionDto delete(Long id);
+    MovieSessionDto deleteMovieSession(Long id);
 }

@@ -8,14 +8,19 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface MovieService {
-    List<MovieDto> getUniqueMoviesByDate(LocalDate date);
+    List<MovieDto> getAllMovies();
 
-    MovieDto create(MovieDto movieDto);
-    MovieDto update(Long id, MovieDto movieDto);
-    MovieDto delete(Long id);
-    MovieDto getById(Long id);
-    List<MovieDto> getAll();
+    List<MovieDto> getAllUniqueMoviesByStartDate(LocalDate startDate);
+
+    MovieDto getMovieById(Long id);
+
+    MovieDto createMovie(MovieDto movieDto);
+
+    MovieDto updateMovie(Long id, MovieDto movieDto);
+
+    MovieDto deleteMovie(Long id);
 
     String uploadPoster(MultipartFile file);
+
     Resource getPoster(String filename);
 }

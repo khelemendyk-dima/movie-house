@@ -9,10 +9,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
@@ -28,8 +30,10 @@ public class PaymentController {
             @ApiResponse(responseCode = "409", description = "Booking conflict, e.g. already paid or seat booked")
     })
     @PostMapping("/checkout-session")
-    public ResponseEntity<String> createCheckoutSession(@RequestBody @Valid PaymentRequest request) {
-        String sessionUrl = paymentService.createCheckoutSession(request);
+    public ResponseEntity<String> createCheckoutSession(@RequestBody @Valid PaymentRequest paymentRequest) {
+        log.info("Received request to create checkout session for booking with id={}", paymentRequest.getBookingId());
+
+        String sessionUrl = paymentService.createCheckoutSession(paymentRequest);
 
         return ResponseEntity.ok(sessionUrl);
     }

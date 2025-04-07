@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/sessions")
 @RequiredArgsConstructor
@@ -35,14 +37,17 @@ public class MovieSessionController {
     public ResponseEntity<List<MovieSessionDto>> getAllSessions(@RequestParam(required = false) Long movieId,
                                                                 @RequestParam(required = false) LocalDate date) {
         if (movieId != null && date != null) {
-            return ResponseEntity.ok(movieSessionService.getSessionsByMovieAndDate(movieId, date));
+            log.info("Received request to get all sessions by movieId={} and date={}", movieId, date);
+            return ResponseEntity.ok(movieSessionService.getAllMovieSessionsByMovieAndDate(movieId, date));
         }
 
         if (movieId != null) {
-            return ResponseEntity.ok(movieSessionService.getSessionsByMovieAndStartTimeAfter(movieId, LocalDateTime.now()));
+            log.info("Received request to get all sessions by movieId={}", movieId);
+            return ResponseEntity.ok(movieSessionService.getAllMovieSessionsByMovieAndStartTimeAfter(movieId, LocalDateTime.now()));
         }
 
-        return ResponseEntity.ok(movieSessionService.getAll());
+        log.info("Received request to get all sessions");
+        return ResponseEntity.ok(movieSessionService.getAllMovieSessions());
     }
 
     @Operation(summary = "Get movie session by ID")
@@ -52,7 +57,9 @@ public class MovieSessionController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<MovieSessionDto> getSessionById(@PathVariable Long id) {
-        return ResponseEntity.ok(movieSessionService.getById(id));
+        log.info("Received request to get movie session by id={}", id);
+
+        return ResponseEntity.ok(movieSessionService.getMovieSessionById(id));
     }
 
     @Operation(summary = "Get session occupancy")
@@ -62,7 +69,9 @@ public class MovieSessionController {
     })
     @GetMapping("/{id}/occupancy")
     public ResponseEntity<List<SeatStatusDto>> getSessionOccupancy(@PathVariable Long id) {
-        return ResponseEntity.ok(movieSessionService.getSessionOccupancy(id));
+        log.info("Received request to get session occupancy by id={}", id);
+
+        return ResponseEntity.ok(movieSessionService.getMovieSessionOccupancy(id));
     }
 
     @Operation(summary = "Get paid tickets for a session")
@@ -72,6 +81,8 @@ public class MovieSessionController {
     })
     @GetMapping("/{id}/tickets")
     public ResponseEntity<List<TicketDto>> getPaidTickets(@PathVariable Long id) {
+        log.info("Received request to get paid tickets for a session with id={}", id);
+
         return ResponseEntity.ok(ticketService.getPaidTicketsBySessionId(id));
     }
 
@@ -82,7 +93,9 @@ public class MovieSessionController {
     })
     @PostMapping
     public ResponseEntity<List<MovieSessionDto>> createSession(@RequestBody @Valid MovieSessionRegistrationDto dto) {
-        return ResponseEntity.ok(movieSessionService.create(dto));
+        log.info("Received request to create a new movie session for movieId={} and hallId={}", dto.getMovieId(), dto.getHallId());
+
+        return ResponseEntity.ok(movieSessionService.createMovieSession(dto));
     }
 
     @Operation(summary = "Update a movie session")
@@ -93,7 +106,9 @@ public class MovieSessionController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<MovieSessionDto> updateSession(@PathVariable Long id, @RequestBody @Valid MovieSessionDto dto) {
-        return ResponseEntity.ok(movieSessionService.update(id, dto));
+        log.info("Received request to update session by id={}", id);
+
+        return ResponseEntity.ok(movieSessionService.updateMovieSession(id, dto));
     }
 
     @Operation(summary = "Delete a movie session")
@@ -103,6 +118,8 @@ public class MovieSessionController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<MovieSessionDto> deleteSession(@PathVariable Long id) {
-        return ResponseEntity.ok(movieSessionService.delete(id));
+        log.info("Received request to delete session by id={}", id);
+
+        return ResponseEntity.ok(movieSessionService.deleteMovieSession(id));
     }
 }

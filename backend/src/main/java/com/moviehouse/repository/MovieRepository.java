@@ -15,5 +15,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             SELECT DISTINCT s.movie FROM MovieSession s
             WHERE DATE(s.startTime) = :date
             """)
-    List<Movie> findUniqueMoviesByDate(@Param("date") LocalDate date);
+    List<Movie> findAllUniqueMoviesStartByDate(@Param("date") LocalDate date);
 }

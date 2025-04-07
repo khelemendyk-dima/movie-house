@@ -1,11 +1,13 @@
 package com.moviehouse.service.impl;
 
+import com.moviehouse.exception.ServiceException;
 import com.moviehouse.model.Booking;
 import com.moviehouse.model.MovieSession;
 import com.moviehouse.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
@@ -24,6 +27,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendBookingConfirmation(String email, Booking booking) {
+        log.info("Preparing to send booking confirmation email to: {} for booking ID: {}", email, booking.getId());
+
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
@@ -37,6 +42,9 @@ public class EmailServiceImpl implements EmailService {
             String movieTime = session.getStartTime().toLocalTime().toString();
             String hallName = session.getHall().getName();
             String ticketUrl = baseUrl + "/api/bookings/" + booking.getId() + "/tickets/download";
+
+            log.debug("Email details - Movie: {}, Date: {}, Time: {}, Hall: {}, Tickets URL: {}",
+                    movieName, movieDate, movieTime, hallName, ticketUrl);
 
             String emailContent = "<html>" +
                     "<body style='font-family: Arial, sans-serif; text-align: center;'>" +
@@ -55,8 +63,10 @@ public class EmailServiceImpl implements EmailService {
 
             helper.setText(emailContent, true);
             mailSender.send(message);
+            log.info("Successfully sent booking confirmation email to: {}", email);
         } catch (MessagingException e) {
-            throw new RuntimeException("Error sending email", e);
+            log.error("Error while sending booking confirmation email to: {}", email, e);
+            throw new ServiceException("Error sending email: " + e.getMessage());
         }
     }
 

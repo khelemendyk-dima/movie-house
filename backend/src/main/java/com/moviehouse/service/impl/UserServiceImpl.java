@@ -11,12 +11,13 @@ import com.moviehouse.service.UserService;
 import com.moviehouse.util.ConvertorUtil;
 import com.moviehouse.util.UserValidatorUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -26,50 +27,74 @@ public class UserServiceImpl implements UserService {
     private final UserValidatorUtil userValidator;
     private final ConvertorUtil convertor;
 
+    @Override
+    public List<UserDto> getAllUsers() {
+        log.info("Fetching all users");
+
+        List<UserDto> users = userRepository.findAll().stream()
+                .map(convertor::toUserDto)
+                .toList();
+
+        log.info("Found {} users", users.size());
+
+        return users;
+    }
+
+    @Override
+    public UserDto getUserById(Long id) {
+        log.info("Fetching user with id={}", id);
+
+        User user = findUserById(id);
+
+        log.info("User with id={} was found", user.getId());
+
+        return convertor.toUserDto(user);
+    }
+
+    @Override
+    public UserDto getUserByEmail(String email) {
+        log.info("Fetching user with email={}", email);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+
+        log.info("User with email={} was found", user.getEmail());
+
+        return convertor.toUserDto(user);
+    }
+
     @Transactional
     @Override
-    public UserDto update(Long id, UserDto userDto) {
+    public UserDto updateUser(Long id, UserDto userDto) {
+        log.info("Updating user with id={}", id);
+
         userValidator.checkIfEmailInUse(id, userDto.getEmail());
 
         User userToUpdate = setupUserToUpdate(id, userDto);
         userRepository.save(userToUpdate);
+
+        log.info("User with id={} updated successfully", id);
 
         return convertor.toUserDto(userToUpdate);
     }
 
     @Transactional
     @Override
-    public UserDto delete(Long id) {
+    public UserDto deleteUser(Long id) {
+        log.info("Deleting user with id={}", id);
+
         User user = findUserById(id);
 
         userRepository.delete(user);
 
-        return convertor.toUserDto(user);
-    }
-
-    @Override
-    public UserDto getById(Long id) {
-        User user = findUserById(id);
+        log.info("User with id={} deleted successfully", id);
 
         return convertor.toUserDto(user);
-    }
-
-    @Override
-    public UserDto getByEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(email));
-
-        return convertor.toUserDto(user);
-    }
-
-    @Override
-    public List<UserDto> getAll() {
-        return userRepository.findAll().stream()
-                .map(convertor::toUserDto)
-                .collect(Collectors.toList());
     }
 
     private User setupUserToUpdate(Long id, UserDto userDto) {
+        log.debug("Setting up user with id={}", id);
+
         Role role = roleRepository.findByName(userDto.getRole())
                 .orElseThrow(() -> new RoleNotFoundException(userDto.getRole()));
 
@@ -83,6 +108,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private User findUserById(Long id) {
+        log.info("Searching user with id={}", id);
+
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }

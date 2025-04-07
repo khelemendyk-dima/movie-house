@@ -7,5 +7,6 @@ import com.moviehouse.dto.AuthDto;
 
 public interface AuthService {
     UserDto register(RegistrationDto registrationDto);
+
     AuthDto authenticate(LoginDto loginDto);
 }

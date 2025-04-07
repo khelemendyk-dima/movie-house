@@ -5,13 +5,13 @@ import com.moviehouse.dto.UserDto;
 import java.util.List;
 
 public interface UserService {
-    List<UserDto> getAll();
+    List<UserDto> getAllUsers();
 
-    UserDto getById(Long id);
+    UserDto getUserById(Long id);
 
-    UserDto getByEmail(String email);
+    UserDto getUserByEmail(String email);
 
-    UserDto update(Long id, UserDto userDto);
+    UserDto updateUser(Long id, UserDto userDto);
 
-    UserDto delete(Long id);
+    UserDto deleteUser(Long id);
 }

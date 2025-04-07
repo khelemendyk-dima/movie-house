@@ -14,6 +14,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -40,6 +42,8 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody @Valid RegistrationDto registrationRequest) {
+        log.info("Received request to register new user with email={}", registrationRequest.getEmail());
+
         return ResponseEntity.ok(authenticationService.register(registrationRequest));
     }
 
@@ -51,6 +55,8 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<AuthDto> authenticate(@RequestBody @Valid LoginDto request, HttpServletResponse response) {
+        log.info("Received request to authenticate user with email={}", request.getEmail());
+
         AuthDto authDto = authenticationService.authenticate(request);
 
         Cookie jwtCookie = createCookie("jwt", authDto.getToken(), cookieMaxAge);
@@ -63,6 +69,8 @@ public class AuthController {
     @ApiResponse(responseCode = "200", description = "Logout successful.")
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) {
+        log.info("Received request to logout user by clearing the JWT cookie");
+
         Cookie resetJwtCookie = createCookie("jwt", null, 0);
 
         response.addCookie(resetJwtCookie);
@@ -81,7 +89,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        UserDto userDTO = userService.getByEmail(userDetails.getUsername());
+        log.info("Received request to get current user with email={}", userDetails.getUsername());
+
+        UserDto userDTO = userService.getUserByEmail(userDetails.getUsername());
 
         return ResponseEntity.ok(userDTO);
     }
