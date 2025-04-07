@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.*;
 
 @Component
 public class JwtExceptionHandlerFilter extends OncePerRequestFilter {

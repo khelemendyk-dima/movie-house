@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.USER_BY_EMAIL_NOT_FOUND;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.USER_BY_EMAIL_NOT_FOUND;
 import static java.lang.String.format;
 
 @Configuration

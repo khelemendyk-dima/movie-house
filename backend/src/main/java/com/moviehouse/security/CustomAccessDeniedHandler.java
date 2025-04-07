@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.ACCESS_DENIED;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.ACCESS_DENIED;
 
 @Slf4j
 @Component

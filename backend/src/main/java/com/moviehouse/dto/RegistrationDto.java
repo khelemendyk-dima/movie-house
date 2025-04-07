@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.*;
 import static com.moviehouse.util.constant.RegexConstant.NAME_REGEX;
 import static com.moviehouse.util.constant.RegexConstant.PASSWORD_REGEX;
 

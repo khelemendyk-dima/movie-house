@@ -3,8 +3,8 @@ package com.moviehouse.dto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.NAME_SIZE_EXCEEDED;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.NAME_SIZE_EXCEEDED;
 import static com.moviehouse.util.constant.RegexConstant.NAME_REGEX;
 
 @Data

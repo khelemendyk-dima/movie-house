@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.*;
 
 @Data
 public class LoginDto {

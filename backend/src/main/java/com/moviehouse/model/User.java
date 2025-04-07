@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.*;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.*;
 import static com.moviehouse.util.constant.RegexConstant.NAME_REGEX;
 
 @Data

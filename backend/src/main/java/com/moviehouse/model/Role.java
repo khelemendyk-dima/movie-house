@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import static com.moviehouse.exceptions.constant.ExceptionMessageConstant.EMPTY_ROLE;
+import static com.moviehouse.exception.constant.ExceptionMessageConstant.EMPTY_ROLE;
 
 @Data
 @Entity
