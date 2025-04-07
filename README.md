@@ -16,20 +16,22 @@ A modern platform for managing a cinema, booking tickets, and handling payments.
 - **Stripe API** – Enables seamless online transactions.
 - **Swagger** – API documentation for easy integration and testing.
 
-## Install Stripe CLI for local usage
-
-[Get started with the Stripe CLI](https://docs.stripe.com/stripe-cli?install-method=homebrew)
-
 ## Running the Project Locally
+
+### Set up credentials
+
+Firstly, property files should be updated with necessary credentials:
+- Update stripe and email configs in **application.properties** file.
+- Change **STRIPE_API_KEY** in the **docker-compose.yaml** file.
 
 ### Start the application
 ```sh
 docker-compose up --build -d
 ```
 
-### Start the Stripe webhook listener
+### Access the application via URL
 ```sh
-stripe listen --forward-to localhost:8080/api/payments/stripe-webhook
+http://localhost:5173/
 ```
 
 ### Swagger URL
