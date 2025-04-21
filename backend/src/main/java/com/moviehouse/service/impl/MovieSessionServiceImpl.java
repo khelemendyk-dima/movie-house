@@ -57,6 +57,8 @@ public class MovieSessionServiceImpl implements MovieSessionService {
                 .map(convertor::toMovieSessionDto)
                 .toList();
 
+        sessions = filterOutPastSessionsIfToday(sessions, date);
+
         log.debug("Fetched {} movie sessions for movieId: {} on date: {}", sessions.size(), movieId, date);
 
         return sessions;
@@ -192,5 +194,16 @@ public class MovieSessionServiceImpl implements MovieSessionService {
 
         return hallRepository.findById(id)
                 .orElseThrow(() -> new HallNotFoundException(id));
+    }
+
+    private List<MovieSessionDto> filterOutPastSessionsIfToday(List<MovieSessionDto> sessions, LocalDate date) {
+        if (date.equals(LocalDate.now())) {
+            LocalDateTime now = LocalDateTime.now();
+            return sessions.stream()
+                    .filter(s -> s.getStartTime().isAfter(now))
+                    .toList();
+        }
+
+        return sessions;
     }
 }
