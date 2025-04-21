@@ -5,13 +5,14 @@ import DownloadIcon from "@mui/icons-material/Download";
 import HomeIcon from "@mui/icons-material/Home";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { motion } from "framer-motion";
+import { getDownloadTicketUrl } from "../services/ticketService";
 
 const SuccessPage = () => {
     const { bookingId } = useParams();
     const navigate = useNavigate();
 
     const handleDownloadTicket = () => {
-        window.open(`http://localhost:8080/api/bookings/${bookingId}/tickets/download`, "_blank");
+        window.open(getDownloadTicketUrl(bookingId), "_blank");
     };
 
     return (
