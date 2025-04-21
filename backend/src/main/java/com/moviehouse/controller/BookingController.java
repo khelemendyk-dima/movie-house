@@ -28,7 +28,7 @@ public class BookingController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Booking created successfully."),
             @ApiResponse(responseCode = "400", description = "Validation error in input data."),
-            @ApiResponse(responseCode = "404", description = "Booking not found.")
+            @ApiResponse(responseCode = "404", description = "Session not found for creating booking.")
     })
     @PostMapping
     public ResponseEntity<BookingDto> createBooking(@RequestBody @Valid BookingDto dto) {
