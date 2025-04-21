@@ -12,8 +12,17 @@ export const fetchSessionsByMovieId = async (movieId: number) => {
 };
 
 export const fetchSessionsByMovie = async (movieId: number, date?: string): Promise<Session[]> => {
-    console.log(date)
     const response = await axiosInstance.get("/sessions", { params: { movieId, date } });
+    return response.data;
+};
+
+export const fetchSessionById = async (sessionId: number) => {
+    const response = await axiosInstance.get(`/sessions/${sessionId}`);
+    return response.data;
+};
+
+export const fetchSessionOccupancy = async (sessionId: number) => {
+    const response = await axiosInstance.get(`/sessions/${sessionId}/occupancy`);
     return response.data;
 };
 
