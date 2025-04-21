@@ -4,7 +4,6 @@ import com.moviehouse.exception.ServiceException;
 import com.moviehouse.model.Booking;
 import com.moviehouse.model.MovieSession;
 import com.moviehouse.service.EmailService;
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +63,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(emailContent, true);
             mailSender.send(message);
             log.info("Successfully sent booking confirmation email to: {}", email);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Error while sending booking confirmation email to: {}", email, e);
             throw new ServiceException("Error sending email: " + e.getMessage());
         }
