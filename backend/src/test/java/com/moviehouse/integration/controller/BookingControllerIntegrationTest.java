@@ -110,6 +110,7 @@ class BookingControllerIntegrationTest extends BaseIntegrationTest {
                 .stream()
                 .limit(numberOfSeats)
                 .map(Seat::getId)
+                .map(seatId -> seatId + 3)
                 .toList();
     }
 }
