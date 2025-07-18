@@ -1,4 +1,4 @@
-interface Ticket {
+export interface Ticket {
     username: string;
     email: string;
     phone: string;

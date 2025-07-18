@@ -3,7 +3,7 @@ import { Container, Typography, CircularProgress } from "@mui/material";
 import DatePagination from "../components/DatePagination";
 import MovieGrid from "../components/MovieGrid";
 import { fetchMoviesByDate } from "../services/movieService";
-import { Movie } from "../types";
+import { Movie } from "../types/Movie";
 
 const MovieListingPage = () => {
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD

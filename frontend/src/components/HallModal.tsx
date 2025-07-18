@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal,
     Box,
@@ -9,8 +9,9 @@ import {
     Typography, Alert,
 } from "@mui/material";
 import { createHall, updateHall } from "../services/hallService";
-import Hall from "../types/Hall";
+import { Hall } from "../types/Hall";
 import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
 
 const HallModal = ({
                        open,
@@ -54,10 +55,10 @@ const HallModal = ({
             }
             await reloadHalls();
             handleClose();
-        } catch (error: any) {
-            if (error.response) {
-                console.error("API Error:", error.response.data);
-                setError(error.response.data.message || "An error occurred.");
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                console.error("API Error:", error.response?.data);
+                setError(error.response?.data?.message || "An error occurred.");
             } else {
                 setError("Network error. Please try again.");
             }

@@ -12,14 +12,18 @@ import {
 } from "@mui/material";
 import SessionModal from "./SessionModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
-import { Session } from "../types";
+import { Session } from "../types/Session";
 import { deleteSession } from "../services/sessionService";
-import { useNavigate } from "react-router-dom";
 import {fetchSessionsByMovieId} from "../services/sessionService";
 import TicketsModal from "../components/TicketsModal.tsx";
 
-const SessionsAdminTable = ({ movieId }: { movieId: number;}) => {
-    const navigate = useNavigate();
+interface SessionsAdminTableProps {
+    movieId: number;
+}
+
+const SessionsAdminTable = ({
+                                movieId
+                            }: SessionsAdminTableProps) => {
     const [sessions, setSessions] = useState<Session[]>([]);
     const [selectedSession, setSelectedSession] = useState<Session | null>(null);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -61,7 +65,10 @@ const SessionsAdminTable = ({ movieId }: { movieId: number;}) => {
         }
 
         try {
-            await deleteSession(selectedSession.id);
+            if (selectedSession.id) {
+                await deleteSession(selectedSession.id);
+            }
+
             loadSessions();
         } catch (error) {
             console.error("Failed to delete session", error);

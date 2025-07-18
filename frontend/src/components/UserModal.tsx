@@ -12,7 +12,7 @@ import {
 import { updateUser } from "../services/userService";
 import { User } from "../types/User";
 import CloseIcon from "@mui/icons-material/Close";
-import {createHall, updateHall} from "../services/hallService.ts";
+import axios from "axios";
 
 interface UserModalProps {
     open: boolean;
@@ -21,7 +21,12 @@ interface UserModalProps {
     reloadUsers: () => void;
 }
 
-const UserModal: React.FC<UserModalProps> = ({ open, handleClose, user, reloadUsers }) => {
+const UserModal = ({
+                       open,
+                       handleClose,
+                       user,
+                       reloadUsers
+                   }: UserModalProps) => {
     const [formData, setFormData] = useState<User>({
         id: 0,
         name: "",
@@ -53,10 +58,10 @@ const UserModal: React.FC<UserModalProps> = ({ open, handleClose, user, reloadUs
             }
             await reloadUsers();
             handleClose();
-        } catch (error: any) {
-            if (error.response) {
-                console.error("API Error:", error.response.data);
-                setError(error.response.data.message || "An error occurred.");
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                console.error("API Error:", error.response?.data);
+                setError(error.response?.data?.message || "An error occurred.");
             } else {
                 setError("Network error. Please try again.");
             }

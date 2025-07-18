@@ -1,12 +1,14 @@
-import { useState } from "react";
-import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { MenuItem, Select, FormControl } from "@mui/material";
 
 interface DateDropdownProps {
     selectedDate: string;
     onDateChange: (date: string) => void;
 }
 
-const DateDropdown: React.FC<DateDropdownProps> = ({ selectedDate, onDateChange }) => {
+const DateDropdown = ({
+                          selectedDate,
+                          onDateChange
+                      }: DateDropdownProps) => {
     const today = new Date();
 
     const generateDates = () => {

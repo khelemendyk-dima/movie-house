@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal, Box, TextField, Button, FormControl, InputLabel, Select,
-    MenuItem, DialogTitle, IconButton, Typography, Alert
+    MenuItem, DialogTitle, IconButton, Typography, Alert, SelectChangeEvent
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { createSession, updateSession } from "../services/sessionService";
 import { Session } from "../types/Session";
 import { fetchHalls } from "../services/hallService.ts";
 import { Hall } from "../types/Hall";
+import axios from "axios";
 
 const SessionModal = ({
                           open,
@@ -48,7 +49,7 @@ const SessionModal = ({
             });
         }
         setError(null);
-    }, [isEditing, open]);
+    }, [isEditing, open, sessionMovieId]);
 
     useEffect(() => {
         if (session) setFormData(session);
@@ -63,24 +64,27 @@ const SessionModal = ({
         setHalls(data);
     };
 
-    const handleChange = (e: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+    const handleChange = (
+        e: React.ChangeEvent<{ name?: string; value: unknown }> | SelectChangeEvent<number>
+    ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name!]: value }));
     };
 
+
     const handleSubmit = async () => {
         try {
-            if (isEditing && session) {
+            if (isEditing && session && session.id) {
                 await updateSession(session.id, formData);
             } else {
                 await createSession(formData);
             }
             await reloadSessions();
             handleClose();
-        } catch (error: any) {
-            if (error.response) {
-                console.error("API Error:", error.response.data);
-                setError(error.response.data.message || "An error occurred.");
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                console.error("API Error:", error.response?.data);
+                setError(error.response?.data?.message || "An error occurred.");
             } else {
                 setError("Network error. Please try again.");
             }

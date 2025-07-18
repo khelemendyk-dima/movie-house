@@ -6,7 +6,8 @@ import DateDropdown from "../components/DateDropdown";
 import Sessions from "../components/Sessions";
 import { useUserStore } from "../stores/userStore";
 import SessionsAdminTable from "../components/SessionsAdminTable";
-import { Movie, Session } from "../types";
+import { Movie } from "../types/Movie";
+import { Session } from "../types/Session";
 import { fetchMovieById } from "../services/movieService";
 import { fetchSessionsByMovie } from "../services/sessionService";
 

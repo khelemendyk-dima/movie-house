@@ -1,17 +1,12 @@
 import axiosInstance from "../api/apiClient";
-import Session from "../types";
-
-export const fetchSessions = async (movieId: number, date: string) => {
-    const response = await axiosInstance.get("/sessions", { params: { movieId, date } });
-    return response.data;
-};
+import { Session } from "../types/Session";
 
 export const fetchSessionsByMovieId = async (movieId: number) => {
     const response = await axiosInstance.get("/sessions", { params: { movieId } });
     return response.data;
 };
 
-export const fetchSessionsByMovie = async (movieId: number, date?: string): Promise<Session[]> => {
+export const fetchSessionsByMovie = async (movieId: string, date?: string): Promise<Session[]> => {
     const response = await axiosInstance.get("/sessions", { params: { movieId, date } });
     return response.data;
 };

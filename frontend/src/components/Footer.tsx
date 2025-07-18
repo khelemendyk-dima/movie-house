@@ -1,6 +1,6 @@
 import { Box, Typography, Stack, Link } from "@mui/material";
 
-const Footer: React.FC = () => {
+const Footer= () => {
     return (
         <Box
             component="footer"

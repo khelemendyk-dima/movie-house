@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { User } from "../types";
+import { User } from "../types/User";
 import { authMe, logout } from "../services/userService.ts";
 
 interface UserStore {
@@ -9,7 +7,7 @@ interface UserStore {
     isLoading: boolean;
     setUser: (user: User) => void;
     fetchUser: () => Promise<void>;
-    logoutUser: () => Promis<void>;
+    logoutUser: () => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>((set) => ({
@@ -22,7 +20,7 @@ export const useUserStore = create<UserStore>((set) => ({
         try {
             const response = await authMe();
             set({ user: response, isLoading: false });
-        } catch (error) {
+        } catch {
             set({ user: null, isLoading: false });
         }
     },
