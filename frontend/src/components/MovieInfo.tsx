@@ -1,3 +1,4 @@
+import React from "react";
 import { Card, CardMedia, CardContent, Typography, Stack } from "@mui/material";
 
 interface MovieInfoProps {

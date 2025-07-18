@@ -1,14 +1,9 @@
 import {Card, CardContent, Typography, Stack, Button} from "@mui/material";
 import {Link} from "react-router-dom";
+import {Session} from "../types/Session.ts";
 
-interface SessionsProps {
-    sessions: {
-        id: number;
-        movieId: number;
-        hallId: number;
-        startTime: string;
-        price: number;
-    }[];
+export interface SessionsProps {
+    sessions: Session[];
 }
 
 const Sessions: React.FC<SessionsProps> = ({sessions}) => {

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { AppBar, Toolbar, Typography, Box, Container, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box, Container } from "@mui/material";
 import { useUserStore } from "../stores/userStore";
 import { Link } from "react-router-dom";
 

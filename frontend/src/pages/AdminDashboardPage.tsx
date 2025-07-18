@@ -1,8 +1,6 @@
 import { Card, CardActionArea, CardContent, Typography, Grid, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import MovieIcon from "@mui/icons-material/Movie";
-import TheaterComedyIcon from "@mui/icons-material/TheaterComedy";
 import PeopleIcon from "@mui/icons-material/People";
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 

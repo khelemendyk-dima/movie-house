@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Box, Link, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../stores/userStore";
 import { login } from "../services/userService";
@@ -16,7 +15,7 @@ const SignInPage = () => {
     const setUser = useUserStore((state) => state.setUser);
 
     const validate = () => {
-        let newErrors = { email: "", password: "" };
+        const newErrors = { email: "", password: "" };
         if (!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
             newErrors.email = "Please enter a valid email address.";
         }

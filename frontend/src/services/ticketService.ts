@@ -7,6 +7,6 @@ export const fetchTicketsBySession = async (sessionId: number): Promise<Ticket[]
     return response.data;
 };
 
-export const getDownloadTicketUrl = (bookingId: number): string => {
+export const getDownloadTicketUrl = (bookingId: string): string => {
     return `${baseUrl}/bookings/${bookingId}/tickets/download`;
 };

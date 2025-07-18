@@ -1,5 +1,5 @@
 export interface Hall {
-    id?: number;
+    id: number;
     name: string;
     rowCount: number;
     seatsPerRow: number;

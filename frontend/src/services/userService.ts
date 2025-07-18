@@ -6,7 +6,7 @@ export const authMe = async (): Promise<User> => {
     return response.data;
 }
 
-export const login = async (userData: any) => {
+export const login = async (userData: Partial<User> & { password: string }) => {
     const response = await axiosInstance.post("/auth/login", userData);
     return response.data;
 }
@@ -20,12 +20,12 @@ export const fetchUsers = async (): Promise<User[]> => {
     return response.data;
 };
 
-export const createUser = async (userData: any) => {
+export const createUser = async (userData: Partial<User> & { password: string; confirmPassword: string }) => {
     const response = await axiosInstance.post("/auth/register", userData);
     return response.data;
 };
 
-export const updateUser = async (id: number, userData: any): Promise<User> => {
+export const updateUser = async (id: number, userData: User): Promise<User> => {
     const response = await axiosInstance.put(`/users/${id}`, userData);
     return response.data;
 };

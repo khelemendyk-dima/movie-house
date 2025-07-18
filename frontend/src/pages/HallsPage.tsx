@@ -14,6 +14,7 @@ import {
 import HallModal from "../components/HallModal";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { fetchHalls, deleteHall } from "../services/hallService";
+import { Hall } from "../types/Hall";
 
 const HallsPage = () => {
     const [halls, setHalls] = useState<Hall[]>([]);
@@ -21,7 +22,6 @@ const HallsPage = () => {
     const [selectedHall, setSelectedHall] = useState<Hall | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
 
     const loadHalls = useCallback(async () => {
         try {
@@ -36,8 +36,7 @@ const HallsPage = () => {
         loadHalls();
     }, [loadHalls]);
 
-    const handleOpenModal = (isEditing: boolean, hall?: Hall) => {
-        setIsEditing(isEditing);
+    const handleOpenModal = (hall?: Hall) => {
         setSelectedHall(hall || null);
         setIsModalOpen(true);
     };
@@ -75,7 +74,7 @@ const HallsPage = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="outlined" color="success" onClick={() => handleOpenModal(false)}>
+                <Button variant="outlined" color="success" onClick={() => handleOpenModal()}>
                     Create Hall
                 </Button>
             </div>
@@ -99,7 +98,7 @@ const HallsPage = () => {
                                     <TableCell>{hall.rowCount}</TableCell>
                                     <TableCell>{hall.seatsPerRow}</TableCell>
                                     <TableCell>
-                                        <Button variant="outlined" color="primary" onClick={() => handleOpenModal(true, hall)}>
+                                        <Button variant="outlined" color="primary" onClick={() => handleOpenModal(hall)}>
                                             Edit
                                         </Button>
                                         <Button variant="outlined" color="error" onClick={() => handleOpenDeleteModal(hall)} sx={{ ml: 2 }}>
@@ -117,7 +116,6 @@ const HallsPage = () => {
                 handleClose={() => setIsModalOpen(false)}
                 hall={selectedHall}
                 reloadHalls={loadHalls}
-                isEditing={isEditing}
             />
             <DeleteConfirmationModal
                 open={isDeleteModalOpen}

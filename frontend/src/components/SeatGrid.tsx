@@ -1,7 +1,18 @@
 import { Grid, Button, Tooltip } from "@mui/material";
 import { Cancel } from "@mui/icons-material";
+import { Seat } from "../types/Seat";
 
-const SeatGrid = ({ groupedSeats, selectedSeats, toggleSeatSelection }) => {
+interface SeatGridProps {
+    groupedSeats: Record<string, Seat[]>;
+    selectedSeats: number[];
+    toggleSeatSelection: (seatId: number) => void;
+}
+
+const SeatGrid = ({
+                      groupedSeats,
+                      selectedSeats,
+                      toggleSeatSelection
+                  }: SeatGridProps) => {
     return (
         <Grid container spacing={1} justifyContent="center" sx={{ mt: 2 }}>
             {Object.keys(groupedSeats).map((row) => (
@@ -24,7 +35,7 @@ const SeatGrid = ({ groupedSeats, selectedSeats, toggleSeatSelection }) => {
                                                 selectedSeats.includes(seat.seatId)
                                                     ? "error"
                                                     : seat.status === "RESERVED"
-                                                        ? "default"
+                                                        ? "inherit"
                                                         : "primary"
                                             }
                                             disabled={seat.status === "RESERVED"}

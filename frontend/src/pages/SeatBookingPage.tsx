@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Container, Grid } from "@mui/material";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {Container, Grid} from "@mui/material";
 
-import { validateUserInfo } from "../utils/validation";
+import {validateUserInfo} from "../utils/validation";
 import BookingMovieInfo from "../components/BookingMovieInfo";
 import BookingForm from "../components/BookingForm";
 import SeatGrid from "../components/SeatGrid";
 import Screen from "../components/Screen";
-import { fetchSessionById, fetchSessionOccupancy } from "../services/sessionService";
-import { fetchMovieById } from "../services/movieService";
-import { createBooking } from "../services/bookingService";
-import { createCheckoutSession } from "../services/paymentService";
-import { BookingRequest } from "../types/Booking";
-import { CheckoutSessionRequest } from "../types/CheckoutSession";
+import {fetchSessionById, fetchSessionOccupancy} from "../services/sessionService";
+import {fetchMovieById} from "../services/movieService";
+import {createBooking} from "../services/bookingService";
+import {createCheckoutSession} from "../services/paymentService";
+import {BookingRequest} from "../types/Booking";
+import {CheckoutSessionRequest} from "../types/CheckoutSession";
+import {Movie} from "../types/Movie.ts";
+import {Seat} from "../types/Seat.ts";
 
 const SeatBookingPage = () => {
     const { sessionId } = useParams();
     const [session, setSession] = useState(null);
-    const [movie, setMovie] = useState(null);
-    const [seats, setSeats] = useState([]);
-    const [selectedSeats, setSelectedSeats] = useState([]);
+    const [movie, setMovie] = useState<Movie>();
+    const [seats, setSeats] = useState<Seat[]>([]);
+    const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
     const [userInfo, setUserInfo] = useState({ name: "", email: "", phone: "" });
     const [seatCountInRow, setSeatCountInRow] = useState(0);
     const [errors, setErrors] = useState({ name: "", email: "", phone: "" });
@@ -38,7 +40,7 @@ const SeatBookingPage = () => {
 
                 if (occupancyData.length > 0) {
                     const count = occupancyData.filter(
-                        (seat) => seat.rowNumber === occupancyData[0].rowNumber
+                        (seat: Seat) => seat.rowNumber === occupancyData[0].rowNumber
                     ).length;
                     setSeatCountInRow(count);
                 }
@@ -50,7 +52,7 @@ const SeatBookingPage = () => {
         if (sessionId) loadData();
     }, [sessionId]);
 
-    const toggleSeatSelection = (seatId) => {
+    const toggleSeatSelection = (seatId: number) => {
         setSelectedSeats((prev) =>
             prev.includes(seatId) ? prev.filter((id) => id !== seatId) : [...prev, seatId]
         );
@@ -82,8 +84,7 @@ const SeatBookingPage = () => {
                 cancelUrl: "http://localhost:5173/booking/cancel",
             };
 
-            const paymentUrl = await createCheckoutSession(checkoutData);
-            window.location.href = paymentUrl;
+            window.location.href = await createCheckoutSession(checkoutData);
         } catch (error) {
             console.error("Booking or checkout failed", error);
         }
@@ -91,7 +92,7 @@ const SeatBookingPage = () => {
 
     if (!session || !movie) return;
 
-    const groupedSeats = seats.reduce((acc, seat) => {
+    const groupedSeats = seats.reduce((acc: Record<string, Seat[]>, seat: Seat) => {
         if (!acc[seat.rowNumber]) acc[seat.rowNumber] = [];
         acc[seat.rowNumber].push(seat);
         return acc;
@@ -105,8 +106,8 @@ const SeatBookingPage = () => {
                 <BookingMovieInfo movie={movie} session={session} />
                 <Grid item xs={12} md={4}>
                     <BookingForm
-                        userInfo={userInfo}
-                        setUserInfo={setUserInfo}
+                        bookingUserInfo={userInfo}
+                        setBookingUserInfo={setUserInfo}
                         errors={errors}
                         session={session}
                         selectedSeats={selectedSeats}
