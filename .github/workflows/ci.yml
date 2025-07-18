@@ -23,7 +23,7 @@ jobs:
           cache: maven
           
       - name: Build and run tests (unit + integration)
-        run: mvn clean verify
+        run: mvn clean verify --file backend/pom.xml
   
   frontend:
     name: Build Frontend
