@@ -3,25 +3,16 @@ import {
     Box,
     Button,
     Container,
-    Table,
-    TableBody,
-    TableCell,
     Typography,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
     TextField,
 } from "@mui/material";
 import MovieModal from "../components/MovieModal";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { fetchMovies, deleteMovie } from "../services/movieService";
-import { Movie } from "../types";
-import { useNavigate } from "react-router-dom";
+import { Movie } from "../types/Movie";
 import MovieTable from "../components/MovieTable";
 
 const MoviesPage = () => {
-    const navigate = useNavigate();
     const [movies, setMovies] = useState<Movie[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
@@ -76,7 +67,7 @@ const MoviesPage = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="outlined" color="success" onClick={() => handleOpenModal(false)}>
+                <Button variant="outlined" color="success" onClick={() => handleOpenModal()}>
                     Create Movie
                 </Button>
             </Box>

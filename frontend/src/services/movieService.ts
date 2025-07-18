@@ -11,7 +11,7 @@ export const fetchMoviesByDate = async (date: string) => {
     return response.data;
 };
 
-export const fetchMovieById = async (id: number): Promise<Movie> => {
+export const fetchMovieById = async (id: string): Promise<Movie> => {
     const response = await axiosInstance.get(`/movies/${id}`);
     return response.data;
 };

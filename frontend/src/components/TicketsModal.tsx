@@ -4,16 +4,21 @@ import {
     DialogTitle, IconButton, Typography
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Session, Ticket } from "../types";
+import { Session } from "../types/Session";
+import { Ticket } from "../types/Ticket";
 import { fetchTicketsBySession } from "../services/ticketService";
 
-interface Props {
+interface TicketsModalProps {
     open: boolean;
     handleClose: () => void;
     session: Session | null;
 }
 
-const TicketsModal: React.FC<Props> = ({ open, handleClose, session }) => {
+const TicketsModal = ({
+                          open,
+                          handleClose,
+                          session
+                      }: TicketsModalProps) => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [search, setSearch] = useState("");
 

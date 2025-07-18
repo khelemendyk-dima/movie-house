@@ -1,6 +1,12 @@
 import { Box, Typography } from "@mui/material";
 
-const Screen = ({ screenArcWidth }) => (
+interface ScreenProps {
+    screenArcWidth: number
+}
+
+const Screen = ({
+                    screenArcWidth
+                }: ScreenProps) => (
     <Box sx={{ position: "relative", mt: 13 }}>
         <Box
             sx={{

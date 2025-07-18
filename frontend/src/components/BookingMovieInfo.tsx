@@ -1,6 +1,16 @@
 import { Box, Grid, Typography } from "@mui/material";
+import { Movie } from "../types/Movie";
+import { Session } from "../types/Session";
 
-const BookingMovieInfo = ({ movie, session }) => {
+interface BookingMovieInfoProps {
+    movie: Movie;
+    session: Session;
+}
+
+const BookingMovieInfo = ({
+                              movie,
+                              session
+                          }: BookingMovieInfoProps) => {
     return (
         <>
             <Grid item xs={12} md={3}>

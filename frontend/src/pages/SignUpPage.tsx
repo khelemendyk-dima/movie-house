@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Box, Link, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {createUser} from "../services/userService";
+import axios from "axios";
 
 const SignUpPage = () => {
     const [name, setName] = useState("");
@@ -22,7 +22,7 @@ const SignUpPage = () => {
     const navigate = useNavigate();
 
     const validate = () => {
-        let newErrors = { name: "", email: "", password: "", confirmPassword: "" };
+        const newErrors = { name: "", email: "", password: "", confirmPassword: "" };
 
         if (!name) {
             newErrors.name = "Name is required.";
@@ -46,7 +46,7 @@ const SignUpPage = () => {
         if (validate()) {
             setLoading(true);
             try {
-                const response = await createUser( {
+                await createUser( {
                     name,
                     email,
                     password,
@@ -54,12 +54,19 @@ const SignUpPage = () => {
                 });
 
                 navigate("/admin/sign-in");
-            } catch (error) {
-                console.error("Registration failed", error);
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    password: error.response.data.message,
-                }));
+            } catch (error: unknown) {
+                if (axios.isAxiosError(error)) {
+                    console.error("Registration failed", error);
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        password: error.response?.data?.message,
+                    }));
+                } else {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        msg: "Network error. Please try again."
+                    }));
+                }
             } finally {
                 setLoading(false);
             }

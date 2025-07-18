@@ -1,6 +1,7 @@
+import React from "react";
 import { Grid } from "@mui/material";
 import MovieCard from "./MovieCard";
-import Movie from "../types";
+import { Movie } from "../types/Movie";
 
 interface MovieGridProps {
     movies: Movie[];

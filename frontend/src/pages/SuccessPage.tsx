@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Typography, Button, Box, Paper } from "@mui/material";
+import { Typography, Button, Box, Paper } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import HomeIcon from "@mui/icons-material/Home";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -12,7 +11,9 @@ const SuccessPage = () => {
     const navigate = useNavigate();
 
     const handleDownloadTicket = () => {
-        window.open(getDownloadTicketUrl(bookingId), "_blank");
+        if (bookingId) {
+            window.open(getDownloadTicketUrl(bookingId), "_blank");
+        }
     };
 
     return (

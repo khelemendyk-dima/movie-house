@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal, Box, TextField, Button, Stack, FormControl, InputLabel, Select,
-    Checkbox, ListItemText, MenuItem, DialogTitle, IconButton, Typography, Alert
+    Checkbox, ListItemText, MenuItem, DialogTitle, IconButton, Typography, Alert,
+    SelectChangeEvent
 } from "@mui/material";
-import { Movie } from "../types";
+import { Movie } from "../types/Movie";
 import { createMovie, updateMovie, uploadPoster } from "../services/movieService";
 import CloseIcon from "@mui/icons-material/Close";
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import axios from "axios";
 
 const GENRES = [
     "Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary",
@@ -14,17 +16,19 @@ const GENRES = [
     "Romance", "Sci-Fi", "Sports", "Thriller", "War", "Western"
 ];
 
+interface MovieModalProps {
+    open: boolean;
+    handleClose: () => void;
+    movie: Movie | null;
+    reloadMovies: () => void;
+}
+
 const MovieModal = ({
                         open,
                         handleClose,
                         movie,
                         reloadMovies
-                    }: {
-    open: boolean;
-    handleClose: () => void;
-    movie: Movie | null;
-    reloadMovies: () => void;
-}) => {
+                    }: MovieModalProps) => {
     const [formData, setFormData] = useState<Movie>({
         id: 0,
         title: "",
@@ -52,7 +56,7 @@ const MovieModal = ({
         setError(null);
     }, [movie, open]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<unknown>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string[]>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name!]: value }));
     };
@@ -78,10 +82,10 @@ const MovieModal = ({
             }
             await reloadMovies();
             handleClose();
-        } catch (error: any) {
-            if (error.response) {
-                console.error("API Error:", error.response.data);
-                setError(error.response.data.message || "An error occurred.");
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                console.error("API Error:", error.response?.data);
+                setError(error.response?.data?.message || "An error occurred.");
             } else {
                 setError("Network error. Please try again.");
             }
