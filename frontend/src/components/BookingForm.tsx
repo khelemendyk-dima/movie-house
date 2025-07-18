@@ -29,7 +29,7 @@ const BookingForm = ({
                          errors,
                          session,
                          selectedSeats,
-                         handleBooking,
+                         handleBooking
                      }: BookingFormProps) => {
     return (
         <Box sx={{ border: 1, borderColor: "gray", p: 2, borderRadius: 2, backgroundColor: "#f9f9f9" }}>
