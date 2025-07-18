@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import MovieActions from "./MovieActions";
-import { Movie } from "../types";
+import { Movie } from "../types/Movie";
 
 interface Props {
     movies: Movie[];
